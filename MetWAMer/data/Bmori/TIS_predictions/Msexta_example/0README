@@ -1,0 +1,333 @@
+
+# Michael E. Sparks (michael.sparks2@usda.gov), 13 January 2021
+
+# This protocol gives a more concrete demonstration of how a researcher
+# might use MetWAMer to identify TISs in gth-predicted sequences,
+# and then adapt the results for use as hints/anchors with Augustus.
+
+# set these envars according to your own installation
+# (see genomethreader manual for details)
+export PATH="/your/path/to/gth-1.7.3-Linux_x86_64-64bit/bin/:$PATH"
+export BSSMDIR="/your/path/to/gth-1.7.3-Linux_x86_64-64bit/bin/bssm"
+export GTHDATADIR="/your/path/to/gth-1.7.3-Linux_x86_64-64bit/bin/gthdata"
+
+# gth (fopen, actually) doesn't like BSSM files being pointed to by symlinks.
+# If your bssm file and $BSSMDIR are on separate file systems,
+# you'll perhaps just want to make a copy of the former in $BSSMDIR.
+cd $BSSMDIR
+ln ${OLDPWD}/../../splice_site_models/gthbssmbuildDir/Bombyx_per_BSSM4GSQ.bssm silkworm.bssm
+cd -
+
+export PATH="`pwd`/../../../../bin/:$PATH"
+ln -s ../../../Bmori_prmFiles Bombyx
+
+# Obtain a soft-masked genomic template (prepared using
+# RepeatMasker, for instance) and hard mask it:
+# for efficiency, we'll use the hard-masked sequences with gth and
+# we'll extract inferred CDSs from soft-masked templates.
+curl https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/839/805/\
+GCF_014839805.1_JHU_Msex_v1.0/GCF_014839805.1_JHU_Msex_v1.0_genomic.fna.gz | \
+  tee Msexta.SM.fna.gz | \
+  gzip -dc | \
+  perl -e 'while(<>){if($_!~/^>/){$_=~tr/acgt/N/;}print $_;}' | \
+  gzip -c \
+  > Msexta.HM.fna.gz
+
+# Ideally, you would be aligning something like Trinity-assembled RNA-Seq
+# data rather than predicted transcripts--I'm only using these Manduca
+# data to roughly demo the general process, caveat emptor.
+curl https://ftp.ncbi.nlm.nih.gov/genomes/all/GCF/014/839/805/\
+GCF_014839805.1_JHU_Msex_v1.0/GCF_014839805.1_JHU_Msex_v1.0_rna.fna.gz | \
+  gzip -dc | \
+  ../../merge_fasta.pl \
+  > Msexta.tcts.fna
+
+pools=32 # used as a global variable here & in the ParaFly call, infra
+../../../../IMMpractical/training_data/utilities/\
+data_partition.sh $pools 2 Msexta.tcts.fna
+mkdir query_mRNA
+mv Msexta.tcts.fna.shuffled.* query_mRNA/
+for m in query_mRNA/Msexta.tcts.fna.shuffled.*; do
+  gth -genomic Msexta.HM.fna.gz -createindicesonly -maskpolyatails -cdna $m
+done
+
+# align transcripts to hard-masked genome using
+# bssm4gsq-trained B. mori splice site models.
+# the wildcard formulation below presumes you've split
+# to 99 or fewer pools; adjust if not.
+mkdir intermediate
+for m in query_mRNA/Msexta.tcts.fna.shuffled.??; do
+  echo "gth \
+-genomic Msexta.HM.fna.gz \
+-cdna $m \
+-maskpolyatails \
+-bssm silkworm \
+-paralogs \
+-skipindexcheck \
+-intermediate -xmlout -gzip \
+-o intermediate/`basename ${m}`.SAonly.hard.xml.gz \
+> intermediate/`basename ${m}`.SAonly.hard.xml.gz.log 2>&1"
+done > commands.Msexta.list
+
+ParaFly -c commands.Msexta.list -CPU $pools -v
+
+gthconsensus -xmlout -o Msexta.overall.hard.xml \
+  intermediate/Msexta.tcts.fna.shuffled.??.SAonly.hard.xml.gz
+gthconsensus -o Msexta.overall.hard \
+  intermediate/Msexta.tcts.fna.shuffled.??.SAonly.hard.xml.gz
+
+# what proportion of aligned tcts "successfully" mapped to gDNA?
+#$ cat query_mRNA/Msexta.tcts.fna.shuffled.?? | grep '^>' | cut -f 1 | sort -u | wc -l
+#27648
+#$ cat query_mRNA/Msexta.tcts.fna.shuffled.?? | grep -c '^>'
+#27648
+#$ gthgetseq -getcdna intermediate/Msexta.tcts.fna.shuffled.??.SAonly.hard.xml.gz | grep -c '^>'
+#27219
+#$ echo "scale=4;27219/27648" | bc
+#.9844
+
+# how many PPSs did gth predict?
+#$ grep -c '^>' Msexta.overall.hard
+#111203
+#$ grep -c '<predicted_protein_sequence>' Msexta.overall.hard.xml
+#111203
+
+mkdir gDNA_templates
+cd gDNA_templates/
+gzip -dc ../Msexta.SM.fna.gz | \
+  ../../../merge_fasta.pl | \
+  ../../../split_fasta_file.pl \
+  2>/dev/null # a kludge, I'll admit
+for f in *.fas; do indexFasSeq $f; done
+find . -name "*.fas" | xargs rm
+cd -
+
+# extract PPSs and collapse them at the gDNA coordinate level
+./parse_predictedORFs.pl < Msexta.overall.hard | \
+  ../../merge_fasta.pl > all_PPS.raw.fpa
+
+# Be sure to use GNU awk: Ubuntu's default awk implementation, mawk,
+# doesn't work well with the null characters used here:
+#$ man 1 mawk | grep -A 2 '^BUGS'
+#BUGS
+#       mawk  cannot handle ascii NUL \0 in the source or data files.  You can output NUL using printf with %c, and any
+#       other 8 bit character is acceptable input.
+cat all_PPS.raw.fpa | gawk -v lps=2 '{printf("%s%s",$0,(NR%lps==0)?"\n":"\0")}' | \
+  ./collapse_in_coordinate_space.pl | sort -u | \
+  perl -e '{while(<>) {chomp($_); $_=~/^(\S+)\t(\S+)\t(\(\d.*?)$/; print "$2 $3\n$1\n";}}' \
+   > uniq_PPS.per_coords.fpa
+
+cat uniq_PPS.per_coords.fpa | \
+  ../../filter_fasta_by_length.pl 100 \
+  > uniq_PPS.per_coords.min100.fpa
+
+# get a sense of the proportion of hard-masked proteins
+for p in `seq 0.0 0.05 .5`; do
+  echo -ne "$p\t"
+  cat uniq_PPS.per_coords.min100.fpa | \
+    ./filter_propMasked.pl $p 2>/dev/null | \
+    grep -c '^>'
+done
+# yields the following:
+#0.00    6012
+#0.05    18591
+#0.10    27804
+#0.15    32622
+#0.20    35666
+#0.25    37678
+#0.30    39149
+#0.35    40487
+#0.40    41721
+#0.45    42899
+#0.50    44244
+#$ grep -c '^>' uniq_PPS.per_coords.min100.fpa
+#49592
+
+cat uniq_PPS.per_coords.min100.fpa | ./filter_propMasked.pl 0.2 \
+  1> uniq_PPS.per_coords.min100.LE20PercMask.fpa \
+  2> uniq_PPS.per_coords.min100.GT20PercMask.dat
+ln -s uniq_PPS.per_coords.min100.LE20PercMask.fpa Msexta_LE20PercMask.fpa # alias
+
+#$ grep -c '^>' uniq_PPS.per_coords.min100.*
+#uniq_PPS.per_coords.min100.fpa:49592
+#uniq_PPS.per_coords.min100.GT20PercMask.dat:13926
+#uniq_PPS.per_coords.min100.LE20PercMask.fpa:35666
+
+# execute the following from a solid state hard drive, if possible
+grep '^>' Msexta_LE20PercMask.fpa | ./extract_CDS.pl | \
+  ../../merge_fasta.pl > Msexta_LE20PercMask.CDS.fromSoftMasked.fna
+
+# We now have CDSs and can in silico translate to peptides (requires EMBOSS).
+# Importantly, we can determine maximal reading frames, and then trim CDSs
+# and adjust coordinates accordingly.
+transeq -sequence Msexta_LE20PercMask.CDS.fromSoftMasked.fna \
+  -outseq Msexta_LE20PercMask.pep.fromSoftMasked.fasta -trim
+./find_longest_orf_from_transeq.pl \
+  <(../../merge_fasta.pl < Msexta_LE20PercMask.pep.fromSoftMasked.fasta | \
+    sed 's/  / /g' | sed 's/ /  /g' | sed 's/_1  (/ (/') \
+  Msexta_LE20PercMask.CDS.fromSoftMasked.fna \
+  outpep.fpa \
+  outcds.fna
+
+# collapse again at the coordinate level
+cat outcds.fna | \
+  gawk -v lps=2 '{printf("%s%s",$0,(NR%lps==0)?"\n":"\0")}' | \
+  perl -e '{while(<>) {$_=~/^(>\S+[+-])\s+(\(\d.*?\d\))\s*\0(\w+\*?)$/; print "$3\t$1\t$2\n";}}' | \
+  sort -u | \
+  perl -e '{while(<>) {chomp($_); $_=~/^(\S+)\t(\S+)\t(\(\d.*?)$/; print "$2 $3\n$1\n";}}' \
+   > outcds.uniq_per_coords.fna
+cat outpep.fpa | \
+  gawk -v lps=2 '{printf("%s%s",$0,(NR%lps==0)?"\n":"\0")}' | \
+  perl -e '{while(<>) {$_=~/^(>\S+[+-])\s+(\(\d.*?\d\))\s*\0(\w+\*?)$/; print "$3\t$1\t$2\n";}}' | \
+  sort -u | \
+  perl -e '{while(<>) {chomp($_); $_=~/^(\S+)\t(\S+)\t(\(\d.*?)$/; print "$2 $3\n$1\n";}}' \
+   > outpep.uniq_per_coords.fpa
+
+ln -s outcds.uniq_per_coords.fna Msexta_LE20PercMask.CDS.fromSoftMasked.coordAdjusted.fna
+ln -s outpep.uniq_per_coords.fpa Msexta_LE20PercMask.pep.fromSoftMasked.coordAdjusted.fpa
+diff <(grep '^>' Msexta_LE20PercMask.CDS.fromSoftMasked.coordAdjusted.fna | sort) \
+     <(grep '^>' Msexta_LE20PercMask.pep.fromSoftMasked.coordAdjusted.fpa | sort) # runs silent
+
+grep '^>' Msexta_LE20PercMask.pep.fromSoftMasked.coordAdjusted.fpa | \
+  ./extract_CDS.plusFlanks.pl \
+  2> Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.fna.OUT-OF-BOUNDS | \
+  ../../merge_fasta.pl | \
+  ./check_lead_flank.pl \
+  > Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.fna
+
+MetWAMer.CDS -s -k 3 -d 2 -l Bombyx/meds.medoids.xml \
+  -a 4 -m Bombyx/parmsT.MetWAM -x Bombyx/parmsF.MetWAM \
+  -g Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.fna \
+  -n Bombyx/neur.CHI2.sigunit -t 1 -c 3 Bombyx/MCparms.CHI2 2> mult3.errors | \
+  perl -e '{while(<>) {$desc=$_; $_=<>; chomp($_); print $_,"\t",$desc;}}' | \
+  sort -k1,1n \
+  > Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
+
+#$ wc -l mult3.errors
+#0 mult3.errors
+#$ grep -c '^>' Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.fna
+#34998
+#$ wc -l Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
+#34998 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
+#$ grep -c '^-1' Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
+#8421
+#$ egrep -c "^102$TAB" Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
+#1531
+#$ expr 8421 + 1531
+#9952
+#$ sed -n '9953,$p' < Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results > Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
+#$ wc -l Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
+#25046 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
+#$ expr 8421 + 1531 + 25046
+#34998
+
+# get some second opinions on whether or not to accept MetWAMer's predictions
+./cleave_alt_MetWAMer.pl \
+  < Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt \
+  1> Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_keep \
+  2> Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_ignore
+#$ wc -l Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt*
+#  25046 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
+#   4250 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_ignore
+#  20796 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_keep
+#  50092 total
+
+cat Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_keep | \
+  cut -f 2- | sort -u | tee keepers.list | wc -l
+#20796
+grep '^>' Msexta_LE20PercMask.CDS.fromSoftMasked.coordAdjusted.fna | sort -u | tee all.list | wc -l
+#35397
+comm -13 keepers.list all.list | tee ignore.list | wc -l
+#14601
+#$ md5sum all.list ; cat keepers.list ignore.list | sort | md5sum
+#88fcc29a83d673612d14f1de83147de2  all.list
+#88fcc29a83d673612d14f1de83147de2  -
+
+cat ignore.list | sed 's/^>//' | \
+  ./extract_ignored.pl Msexta_LE20PercMask.CDS.fromSoftMasked.coordAdjusted.fna \
+  > ignore.CDS.fna
+cat Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_keep | \
+  ./clip_per_MetWAMer.pl Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.fna \
+  > keepers.CDS.fna
+grep -v '^>' keepers.CDS.fna | grep -v '^ATG' # runs silent
+#$ cat keepers.CDS.fna ignore.CDS.fna | grep -c '^>'
+#35397
+
+# After clipping, let's adjust CDS coordinates and again collapse redundant entries
+# in coordinate space (rather than sequence space, as this preserves info helpful
+# for studying gene duplications/ gene copy number, for example)
+( grep '^>' keepers.CDS.fna | ./update_CDS_coordinates_per_MetWAMer.pl ; \
+  grep '^>' ignore.CDS.fna ) | \
+  sort -u > mature_and_unique-by-coord_CDS.coords.txt
+cat mature_and_unique-by-coord_CDS.coords.txt | \
+  ./extract_mature_CDS.pl | \
+  ../../merge_fasta.pl | \
+  ../../columnize_fasta.pl \
+  > mature_and_unique-by-coord_CDS.fna
+transeq \
+  -frame 1 \
+  -trim \
+  -sequence mature_and_unique-by-coord_CDS.fna \
+  -outseq mature_and_unique-by-coord_pep.fpa.tmp
+cat mature_and_unique-by-coord_pep.fpa.tmp | \
+  sed 's/  / /g' | sed 's/ /  /g' | sed 's/_1  (/ (/' \
+  > mature_and_unique-by-coord_pep.fpa
+rm mature_and_unique-by-coord_pep.fpa.tmp
+
+# sanity check: this step should not have introduced anything new in the way
+# of sequences relative to ignore.CDS.fna + keepers.CDS.fna
+cat ignore.CDS.fna keepers.CDS.fna | \
+  ../../merge_fasta.pl | \
+  grep -v '^>' | sort > file.A
+cat mature_and_unique-by-coord_CDS.fna | \
+  ../../merge_fasta.pl | \
+  grep -v '^>' | sort > file.B
+comm -13 file.A file.B | wc -l && rm file.[AB] # should return 0
+
+# after clipping, must reimpose 100aa peptide floor
+# let's also introduce a 3500aa ceiling (yes, valid
+# arguments could be made against either of these parameters)
+cat mature_and_unique-by-coord_pep.fpa | \
+  ../../filter_fasta_by_length.pl 100 | \
+  ./filter_fasta_by_max_length.pl 3500 | \
+  ../../merge_fasta.pl | \
+  ../../columnize_fasta.pl \
+  > mature_and_unique-by-coord_pep.len-bounded.fpa
+grep '^>' mature_and_unique-by-coord_pep.len-bounded.fpa | \
+  ./extract_mature_CDS.pl | \
+  ../../merge_fasta.pl | \
+  ../../columnize_fasta.pl \
+  > mature_and_unique-by-coord_CDS.len-bounded.fna
+
+#$ grep -c '^>' mature_and_unique-by-coord_*.len-bounded.f?a
+#mature_and_unique-by-coord_CDS.len-bounded.fna:33028
+#mature_and_unique-by-coord_pep.len-bounded.fpa:33028
+## assuming you still have the 'nonred' alias set from ../../0README,
+## get a sense of duplicated protein sequences in the genome
+#$ cat mature_and_unique-by-coord_CDS.len-bounded.fna | nonred | grep -c '^>'
+#32398
+## note the redundancy of the genetic code
+#$ cat mature_and_unique-by-coord_pep.len-bounded.fpa | nonred | grep -c '^>'
+#31894
+
+# If the end user would like to use these models as extrinsic
+# evidence for use with Augustus, the following could be used:
+
+# all genes as hints
+grep '^>' mature_and_unique-by-coord_CDS.len-bounded.fna | \
+  ./hints_from_gthMetWAMer.pl | \
+  grep -v '^intron-length-out-of-bounds$' \
+  > gth_MetWAMer.hintsfile.gff
+
+# all genes as anchors (i.e., immutable structures)
+# ideally, you would run this on a local SSD
+grep '^>' mature_and_unique-by-coord_CDS.len-bounded.fna | \
+  ./anchors_from_gthMetWAMer.pl | \
+  > gth_MetWAMer.anchorfile.gff
+
+# canonical genes as anchors, all else as hints
+./sift_hints_vs_anchors.pl \
+  gth_MetWAMer.anchorfile.gff \
+  gth_MetWAMer.hintsfile.gff \
+  > gth_MetWAMer.sifted.gff
+

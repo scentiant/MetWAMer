@@ -1,0 +1,184 @@
+bookkeeping.txt
+Michael E Sparks (mespar1@gmail.com)
+
+This flatfile records the various routines implemented in each
+  source file of the IMMpractical library, stating whether it
+  is meant to be externally callable, and what routines it in
+  turn calls, if any.  In short, it's a road map to the source
+  files.
+
+First, though, here's the library's change log:
+
+Version   Notes
+ 0.1      First release of the IMMpractical library,
+          largely incomplete but usable. Only top-down deleted
+          interpolated Markov models were implemented, specifically
+          with binary training and sequence classification routines.
+ 0.2      Updated library to optionally support the
+          three-periodic nature of coding nucleic acid
+          sequences.
+ 0.3      Moderate reorganization and extensive documentation of
+          existing code base (improved code legibility), plus
+          incorporation of routines for using bottom-up DIMMs and
+          fixed-order Markov models.
+ 0.4      Incorporated chi**2 models, and made minor changes
+          to the DIMM routines.
+ 0.5      Added 7-class model for three-periodic forward and
+          reverse (shadow) strand modeling.
+ 0.6      Added support for model orders to range from 0 to 5,
+          inclusive.  Also, the library driver program now has
+          support for computing posterior probabilities of test
+          sequences in addition to likelihoods.
+ 1.0      Implemented dynamically modulating Markov models, for
+          both variance- and range-based cloud defining methods.
+          Added quantile-specific functionality, based either on
+          overall G+C composition of a test sequence, or on a
+          sliding window.
+
+chisquare_utils.c
+  CHISQUARE_final_probs (callable)
+    (calls calc_chisquareweight)
+  calc_chisquareweight (static)
+    (calls calc_chisq_conf)
+  calc_chisq_conf (static)
+
+dimm_utils.c
+  DIMM_final_probs (callable)
+    (calls calc_root
+           copy_data
+           quicksort)
+  calc_root (static)
+    (calls fxns4TDDI
+           fxns4BUDI)
+  fxns4TDDI (static)
+  fxns4BUDI (static)
+
+dm_utils.c
+  dm_probmaker (callable)
+    (calls calc_quantiles
+           init_counts
+           get_fasta
+           get_countsQT
+           get_counts
+           get_counts3percodQT
+           get_counts3percod
+           fo_pseudo
+           fo_rfreqs)
+  DMMMprobQT (callable)
+    (calls trans
+           simplex)
+  DMMMprob (callable)
+    (calls trans
+           simplex)
+  import_dm_probsQT (callable)
+  import_dm_probs (callable)
+
+fo_utils.c
+  fo_probmaker (callable)
+    (calls calc_quantiles
+           init_counts
+           get_fasta
+           get_countsQT
+           get_counts
+           get_counts3percodQT
+           get_counts3percod
+           fo_pseudo
+           fo_rfreqs)
+  fo_pseudo (callable)
+  fo_rfreqs (callable)
+  FOprobQT (callable)
+    (calls trans)
+  FOprob (callable)
+    (calls trans)
+  import_fo_probsQT (callable)
+  import_fo_probs (callable)
+
+immpractical.c
+  maintrain (callable)
+    (calls fo_probmaker
+           dm_probmaker
+           imm_probmaker)
+  init_counts (callable)
+  get_countsQT (callable)
+    (calls trans)
+  get_counts (callable)
+    (calls trans)
+  get_counts3percodQT (callable)
+    (calls trans
+           basecomp)
+  get_counts3percod (callable)
+    (calls trans
+           basecomp)
+  induce_pseudocounts (callable)
+  get_rfreqs (callable)
+  calc_quantiles (callable)
+    (calls ctGCpercs
+           find_quantiles)
+  ctGCpercs (static)
+  find_quantiles (static)
+  imm_probmaker (callable)
+    (calls calc_quantiles
+           init_counts
+           get_fasta
+           get_countsQT
+           get_counts
+           get_counts3percodQT
+           get_counts3percod
+           induce_pseudocounts
+           get_rfreqs
+           DIMM_final_probs
+           CHISQUARE_final_probs)
+  IMMprobQT (callable)
+    (calls trans)
+  IMMprob (callable)
+    (calls trans)
+  import_imm_probsQT (callable)
+  import_imm_probs (callable)
+
+sequence_parse.c
+  get_fasta (callable)
+  trans (callable)
+    (calls random_residue)
+  basecomp (callable)
+  random_residue (static)
+
+simplex.c
+  simplex (callable)
+    (calls init_simplex
+           combinations
+           print_data
+           scanforpositive
+           pivot)
+  pivot (static)
+  print_data (static)
+  scanforpositive (static)
+  factorial (static)
+  combinations (static)
+  init_simplex (static)
+    (calls combinations
+           print_data
+           scanforpositive
+           pivot)
+
+sorting.c
+  quicksort (callable)
+    (calls partition)
+  partition (static)
+  copy_data (callable)
+
+train_MM.c
+  (calls maintrain)
+
+use_MM.c
+  (calls import_fo_probsQT
+         import_fo_probs
+         import_imm_probsQT
+         import_imm_probs
+         import_dm_probsQT
+         import_dm_probs
+         FOprobQT
+         FOprob
+         IMMprobQT
+         IMMprob
+         DMMMprobQT
+         DMMMprob)

@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<PASIF_output xmlns="http://www.pasif.org/PASIF_output/" PASIF_XML_version="1.0">
+  <locus id="+5024 (151  897,1090  1180,1282  1301) NC_008474+">
+    <isoform serial="1" score="9.9997e-01">
+      <exon start="646" stop="1180"/>
+      <exon start="1282" stop="1444"/>
+    </isoform>
+    <isoform serial="2" score="9.7690e-01">
+      <exon start="593" stop="897"/>
+      <exon start="1090" stop="1169"/>
+    </isoform>
+    <isoform serial="3" score="9.7679e-01">
+      <exon start="473" stop="897"/>
+      <exon start="1282" stop="1348"/>
+    </isoform>
+    <isoform serial="4" score="9.7679e-01">
+      <exon start="527" stop="897"/>
+      <exon start="1282" stop="1400"/>
+    </isoform>
+    <isoform serial="5" score="9.7679e-01">
+      <exon start="563" stop="897"/>
+      <exon start="1282" stop="1385"/>
+    </isoform>
+    <isoform serial="6" score="9.7635e-01">
+      <exon start="64" stop="181"/>
+      <exon start="1057" stop="1180"/>
+      <exon start="1282" stop="1443"/>
+    </isoform>
+  </locus>
+  <locus id="+3383 (151  181,517  1086,1887  2092) NC_008471-">
+    <isoform serial="1" score="9.6475e-01">
+      <exon start="678" stop="1086"/>
+      <exon start="1887" stop="2164"/>
+    </isoform>
+    <isoform serial="2" score="7.3961e-01">
+      <exon start="596" stop="1086"/>
+      <exon start="1584" stop="1675"/>
+    </isoform>
+    <isoform serial="3" score="7.2090e-01">
+      <exon start="806" stop="1086"/>
+      <exon start="1584" stop="1869"/>
+    </isoform>
+    <isoform serial="4" score="5.0893e-01">
+      <exon start="1343" stop="1393"/>
+      <exon start="1887" stop="2135"/>
+    </isoform>
+  </locus>
+  <locus id="+2829 (151  858,1676  1840,1951  1986) NC_008470+">
+    <isoform serial="1" score="9.8411e-01">
+      <exon start="748" stop="858"/>
+      <exon start="1951" stop="2007"/>
+    </isoform>
+    <isoform serial="2" score="9.8407e-01">
+      <exon start="545" stop="858"/>
+      <exon start="1676" stop="1799"/>
+    </isoform>
+    <isoform serial="3" score="9.8207e-01">
+      <exon start="268" stop="858"/>
+      <exon start="1648" stop="1792"/>
+    </isoform>
+    <isoform serial="4" score="9.8207e-01">
+      <exon start="387" stop="858"/>
+      <exon start="1648" stop="1833"/>
+    </isoform>
+    <isoform serial="5" score="9.8207e-01">
+      <exon start="352" stop="858"/>
+      <exon start="1648" stop="2108"/>
+    </isoform>
+    <isoform serial="6" score="9.8206e-01">
+      <exon start="631" stop="858"/>
+      <exon start="1648" stop="1722"/>
+    </isoform>
+    <isoform serial="7" score="9.7851e-01">
+      <exon start="309" stop="858"/>
+      <exon start="1648" stop="1717"/>
+      <exon start="1951" stop="2095"/>
+    </isoform>
+    <isoform serial="8" score="8.4561e-01">
+      <exon start="257" stop="858"/>
+      <exon start="1499" stop="1836"/>
+    </isoform>
+  </locus>
+  <locus id="+7937 (151  219,301  366,477  562,891  990,1110  1220,1306  1347,1552  1638,1767  1870,2001  2311) NC_008480+">
+    <isoform serial="1" score="9.9972e-01">
+      <exon start="68" stop="366"/>
+      <exon start="1071" stop="1347"/>
+      <exon start="1552" stop="2030"/>
+    </isoform>
+    <isoform serial="2" score="9.8835e-01">
+      <exon start="157" stop="555"/>
+      <exon start="1110" stop="1347"/>
+      <exon start="1767" stop="2095"/>
+    </isoform>
+    <isoform serial="3" score="9.8260e-01">
+      <exon start="1298" stop="1638"/>
+      <exon start="1767" stop="2062"/>
+    </isoform>
+    <isoform serial="4" score="9.5338e-01">
+      <exon start="108" stop="219"/>
+      <exon start="808" stop="991"/>
+    </isoform>
+    <isoform serial="5" score="8.4911e-01">
+      <exon start="49" stop="366"/>
+      <exon start="891" stop="1007"/>
+      <exon start="1448" stop="1908"/>
+    </isoform>
+    <isoform serial="6" score="8.4024e-01">
+      <exon start="901" stop="1220"/>
+      <exon start="1306" stop="1356"/>
+    </isoform>
+    <isoform serial="7" score="6.2351e-01">
+      <exon start="620" stop="1007"/>
+      <exon start="1306" stop="1459"/>
+    </isoform>
+    <isoform serial="8" score="5.9826e-01">
+      <exon start="833" stop="1007"/>
+      <exon start="1552" stop="1953"/>
+    </isoform>
+    <isoform serial="9" score="5.9824e-01">
+      <exon start="765" stop="1007"/>
+      <exon start="1552" stop="2123"/>
+    </isoform>
+    <isoform serial="10" score="5.8883e-01">
+      <exon start="1221" stop="1638"/>
+      <exon start="2001" stop="2330"/>
+    </isoform>
+  </locus>
+  <locus id="+4953 (151  335,439  532,618  801,1066  1079) NC_008474-">
+    <isoform serial="1" score="8.6612e-01">
+      <exon start="108" stop="335"/>
+      <exon start="618" stop="764"/>
+      <exon start="916" stop="1009"/>
+    </isoform>
+    <isoform serial="2" score="8.5985e-01">
+      <exon start="235" stop="335"/>
+      <exon start="618" stop="1005"/>
+    </isoform>
+    <isoform serial="3" score="7.1732e-01">
+      <exon start="39" stop="335"/>
+      <exon start="439" stop="511"/>
+    </isoform>
+  </locus>
+  <locus id="+4653 (151  198,300  656,2837  2998,3115  3248,3573  3720) NC_008474+">
+    <none />
+  </locus>
+  <locus id="+7007 (151  698,1361  1658) NC_008478-">
+    <isoform serial="1" score="9.8496e-01">
+      <exon start="83" stop="117"/>
+      <exon start="528" stop="698"/>
+      <exon start="1361" stop="1442"/>
+    </isoform>
+    <isoform serial="2" score="9.7401e-01">
+      <exon start="171" stop="698"/>
+      <exon start="1361" stop="1579"/>
+    </isoform>
+    <isoform serial="3" score="9.7401e-01">
+      <exon start="358" stop="698"/>
+      <exon start="1361" stop="1746"/>
+    </isoform>
+    <isoform serial="4" score="9.7401e-01">
+      <exon start="160" stop="698"/>
+      <exon start="1361" stop="1706"/>
+    </isoform>
+    <isoform serial="5" score="8.3562e-01">
+      <exon start="83" stop="117"/>
+      <exon start="424" stop="818"/>
+    </isoform>
+  </locus>
+  <locus id="+2759 (151  711,804  1044,1147  1226) NC_008470+">
+    <isoform serial="1" score="9.9892e-01">
+      <exon start="248" stop="711"/>
+      <exon start="804" stop="1058"/>
+    </isoform>
+    <isoform serial="2" score="9.9892e-01">
+      <exon start="183" stop="711"/>
+      <exon start="804" stop="1237"/>
+    </isoform>
+    <isoform serial="3" score="9.9892e-01">
+      <exon start="322" stop="711"/>
+      <exon start="804" stop="1243"/>
+    </isoform>
+    <isoform serial="4" score="9.9892e-01">
+      <exon start="274" stop="711"/>
+      <exon start="804" stop="1006"/>
+    </isoform>
+    <isoform serial="5" score="9.9892e-01">
+      <exon start="476" stop="711"/>
+      <exon start="804" stop="1090"/>
+    </isoform>
+    <isoform serial="6" score="9.9892e-01">
+      <exon start="540" stop="711"/>
+      <exon start="804" stop="1046"/>
+    </isoform>
+    <isoform serial="7" score="9.9892e-01">
+      <exon start="287" stop="711"/>
+      <exon start="804" stop="1335"/>
+    </isoform>
+    <isoform serial="8" score="9.9892e-01">
+      <exon start="583" stop="711"/>
+      <exon start="804" stop="1020"/>
+    </isoform>
+    <isoform serial="9" score="9.9892e-01">
+      <exon start="589" stop="711"/>
+      <exon start="804" stop="1284"/>
+    </isoform>
+    <isoform serial="10" score="9.9892e-01">
+      <exon start="650" stop="711"/>
+      <exon start="804" stop="1166"/>
+    </isoform>
+    <isoform serial="11" score="7.0513e-01">
+      <exon start="803" stop="1044"/>
+      <exon start="1147" stop="1276"/>
+    </isoform>
+  </locus>
+  <locus id="+4301 (151  160,291  461,561  653,743  892,983  1015) NC_008473-">
+    <isoform serial="1" score="9.9997e-01">
+      <exon start="115" stop="160"/>
+      <exon start="743" stop="904"/>
+    </isoform>
+    <isoform serial="2" score="9.9993e-01">
+      <exon start="63" stop="160"/>
+      <exon start="561" stop="637"/>
+    </isoform>
+    <isoform serial="3" score="9.9865e-01">
+      <exon start="117" stop="160"/>
+      <exon start="291" stop="461"/>
+      <exon start="983" stop="1164"/>
+    </isoform>
+    <isoform serial="4" score="9.9861e-01">
+      <exon start="92" stop="160"/>
+      <exon start="291" stop="653"/>
+      <exon start="743" stop="845"/>
+    </isoform>
+    <isoform serial="5" score="9.9813e-01">
+      <exon start="83" stop="160"/>
+      <exon start="561" stop="653"/>
+      <exon start="743" stop="912"/>
+    </isoform>
+    <isoform serial="6" score="9.9813e-01">
+      <exon start="103" stop="160"/>
+      <exon start="561" stop="653"/>
+      <exon start="743" stop="996"/>
+    </isoform>
+    <isoform serial="7" score="9.9813e-01">
+      <exon start="24" stop="160"/>
+      <exon start="561" stop="653"/>
+      <exon start="743" stop="1080"/>
+    </isoform>
+    <isoform serial="8" score="9.9803e-01">
+      <exon start="92" stop="160"/>
+      <exon start="291" stop="447"/>
+      <exon start="561" stop="997"/>
+    </isoform>
+    <isoform serial="9" score="9.9783e-01">
+      <exon start="73" stop="160"/>
+      <exon start="561" stop="653"/>
+      <exon start="983" stop="1073"/>
+    </isoform>
+    <isoform serial="10" score="9.9607e-01">
+      <exon start="347" stop="461"/>
+      <exon start="743" stop="898"/>
+      <exon start="983" stop="1050"/>
+    </isoform>
+    <isoform serial="11" score="9.9607e-01">
+      <exon start="217" stop="461"/>
+      <exon start="743" stop="898"/>
+      <exon start="983" stop="1070"/>
+    </isoform>
+    <isoform serial="12" score="9.9530e-01">
+      <exon start="523" stop="653"/>
+      <exon start="743" stop="898"/>
+      <exon start="983" stop="1142"/>
+    </isoform>
+    <isoform serial="13" score="9.9036e-01">
+      <exon start="41" stop="160"/>
+      <exon start="561" stop="898"/>
+      <exon start="983" stop="1073"/>
+    </isoform>
+    <isoform serial="14" score="9.6208e-01">
+      <exon start="386" stop="461"/>
+      <exon start="743" stop="921"/>
+    </isoform>
+    <isoform serial="15" score="9.6208e-01">
+      <exon start="354" stop="461"/>
+      <exon start="743" stop="915"/>
+    </isoform>
+    <isoform serial="16" score="9.6208e-01">
+      <exon start="361" stop="461"/>
+      <exon start="743" stop="924"/>
+    </isoform>
+    <isoform serial="17" score="9.6208e-01">
+      <exon start="373" stop="461"/>
+      <exon start="743" stop="1038"/>
+    </isoform>
+    <isoform serial="18" score="9.6207e-01">
+      <exon start="280" stop="461"/>
+      <exon start="743" stop="836"/>
+    </isoform>
+    <isoform serial="19" score="9.6207e-01">
+      <exon start="373" stop="461"/>
+      <exon start="743" stop="1045"/>
+    </isoform>
+    <isoform serial="20" score="9.6207e-01">
+      <exon start="386" stop="461"/>
+      <exon start="743" stop="819"/>
+    </isoform>
+    <isoform serial="21" score="9.6207e-01">
+      <exon start="348" stop="461"/>
+      <exon start="743" stop="971"/>
+    </isoform>
+    <isoform serial="22" score="9.6102e-01">
+      <exon start="235" stop="461"/>
+      <exon start="743" stop="1065"/>
+    </isoform>
+    <isoform serial="23" score="9.4943e-01">
+      <exon start="321" stop="461"/>
+      <exon start="983" stop="1146"/>
+    </isoform>
+    <isoform serial="24" score="9.4942e-01">
+      <exon start="364" stop="461"/>
+      <exon start="983" stop="1132"/>
+    </isoform>
+    <isoform serial="25" score="9.4905e-01">
+      <exon start="116" stop="461"/>
+      <exon start="743" stop="901"/>
+    </isoform>
+    <isoform serial="26" score="9.4719e-01">
+      <exon start="193" stop="461"/>
+      <exon start="983" stop="1081"/>
+    </isoform>
+    <isoform serial="27" score="9.4555e-01">
+      <exon start="217" stop="461"/>
+      <exon start="983" stop="1119"/>
+    </isoform>
+    <isoform serial="28" score="9.4539e-01">
+      <exon start="103" stop="461"/>
+      <exon start="743" stop="896"/>
+    </isoform>
+    <isoform serial="29" score="9.3898e-01">
+      <exon start="223" stop="447"/>
+      <exon start="743" stop="819"/>
+    </isoform>
+    <isoform serial="30" score="9.3120e-01">
+      <exon start="104" stop="461"/>
+      <exon start="561" stop="653"/>
+      <exon start="983" stop="1142"/>
+    </isoform>
+    <isoform serial="31" score="9.3029e-01">
+      <exon start="205" stop="447"/>
+      <exon start="743" stop="812"/>
+    </isoform>
+    <isoform serial="32" score="9.2708e-01">
+      <exon start="367" stop="461"/>
+      <exon start="561" stop="634"/>
+    </isoform>
+    <isoform serial="33" score="8.9876e-01">
+      <exon start="321" stop="447"/>
+      <exon start="561" stop="887"/>
+    </isoform>
+    <isoform serial="34" score="8.8335e-01">
+      <exon start="347" stop="653"/>
+      <exon start="983" stop="1081"/>
+    </isoform>
+    <isoform serial="35" score="8.7433e-01">
+      <exon start="99" stop="160"/>
+      <exon start="387" stop="461"/>
+      <exon start="743" stop="1073"/>
+    </isoform>
+    <isoform serial="36" score="8.6554e-01">
+      <exon start="30" stop="160"/>
+      <exon start="291" stop="461"/>
+      <exon start="611" stop="1038"/>
+    </isoform>
+    <isoform serial="37" score="8.2903e-01">
+      <exon start="79" stop="160"/>
+      <exon start="387" stop="653"/>
+      <exon start="743" stop="1057"/>
+    </isoform>
+    <isoform serial="38" score="8.1103e-01">
+      <exon start="58" stop="461"/>
+      <exon start="743" stop="898"/>
+      <exon start="983" stop="1061"/>
+    </isoform>
+    <isoform serial="39" score="8.0425e-01">
+      <exon start="63" stop="160"/>
+      <exon start="561" stop="653"/>
+      <exon start="809" stop="919"/>
+    </isoform>
+    <isoform serial="40" score="8.0054e-01">
+      <exon start="25" stop="160"/>
+      <exon start="561" stop="653"/>
+      <exon start="809" stop="1142"/>
+    </isoform>
+    <isoform serial="41" score="6.6170e-01">
+      <exon start="386" stop="461"/>
+      <exon start="665" stop="898"/>
+      <exon start="983" stop="1070"/>
+    </isoform>
+    <isoform serial="42" score="6.4049e-01">
+      <exon start="59" stop="160"/>
+      <exon start="806" stop="901"/>
+    </isoform>
+    <isoform serial="43" score="6.4032e-01">
+      <exon start="63" stop="160"/>
+      <exon start="719" stop="1061"/>
+    </isoform>
+    <isoform serial="44" score="6.3163e-01">
+      <exon start="105" stop="160"/>
+      <exon start="806" stop="1041"/>
+    </isoform>
+    <isoform serial="45" score="5.9372e-01">
+      <exon start="32" stop="160"/>
+      <exon start="806" stop="921"/>
+    </isoform>
+    <isoform serial="46" score="5.7817e-01">
+      <exon start="59" stop="160"/>
+      <exon start="806" stop="1022"/>
+    </isoform>
+    <isoform serial="47" score="5.3642e-01">
+      <exon start="128" stop="208"/>
+      <exon start="743" stop="898"/>
+      <exon start="983" stop="1132"/>
+    </isoform>
+    <isoform serial="48" score="5.2804e-01">
+      <exon start="103" stop="160"/>
+      <exon start="341" stop="898"/>
+      <exon start="983" stop="1080"/>
+    </isoform>
+    <isoform serial="49" score="5.2666e-01">
+      <exon start="222" stop="309"/>
+      <exon start="743" stop="898"/>
+      <exon start="983" stop="1139"/>
+    </isoform>
+    <isoform serial="50" score="5.2226e-01">
+      <exon start="215" stop="309"/>
+      <exon start="743" stop="898"/>
+      <exon start="983" stop="1129"/>
+    </isoform>
+  </locus>
+  <locus id="+8272 (151  225,951  1077,1188  1354,1522  1629,1979  2395) NC_008481+">
+    <none />
+  </locus>
+</PASIF_output>

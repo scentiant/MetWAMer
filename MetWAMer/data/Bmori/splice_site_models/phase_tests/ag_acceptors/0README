@@ -1,0 +1,33 @@
+# Michael E. Sparks (michael.sparks2@usda.gov), 20 December 2020
+
+grep '^>' ../../training_data/AG_acceptor/T0 | sort > gth_T0
+grep '^>' ../../training_data/AG_acceptor/T1 | sort > gth_T1
+grep '^>' ../../training_data/AG_acceptor/T2 | sort > gth_T2
+grep '^>' ../../gthbssmbuildDir/BSSM_train_dir/AG_acceptor/T2 | sort > BSSM4GSQ_T2
+grep '^>' ../../gthbssmbuildDir/BSSM_train_dir/AG_acceptor/T1 | sort > BSSM4GSQ_T1
+grep '^>' ../../gthbssmbuildDir/BSSM_train_dir/AG_acceptor/T0 | sort > BSSM4GSQ_T0
+
+# the training datasets harvested differ, but we can at
+# least confirm phase nomenclature is harmonized:
+
+$ comm -12 gth_T0 BSSM4GSQ_T0 | wc -l
+187
+$ comm -12 gth_T0 BSSM4GSQ_T1 | wc -l
+0
+$ comm -12 gth_T0 BSSM4GSQ_T2 | wc -l
+0
+
+$ comm -12 gth_T1 BSSM4GSQ_T1 | wc -l
+489
+$ comm -12 gth_T1 BSSM4GSQ_T0 | wc -l
+0
+$ comm -12 gth_T1 BSSM4GSQ_T2 | wc -l
+0
+
+$ comm -12 gth_T2 BSSM4GSQ_T2 | wc -l
+335
+$ comm -12 gth_T2 BSSM4GSQ_T0 | wc -l
+0
+$ comm -12 gth_T2 BSSM4GSQ_T1 | wc -l
+0
+

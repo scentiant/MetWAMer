@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+         datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+
+<!-- Grammar for PASIF output.
+     Michael E Sparks (mespar1@gmail.com)
+     Last modified: 28 September 2007
+
+     Change Log:
+
+     28 September 2007 - added the optional "best_TIS_score"
+       and "Met_seen_p" attributes to the "MetWAMer_annot"
+       element.
+
+     16 August 2007 - Added optional "MetWAMer_annot" element
+       to the "isoform" element.
+
+     8 June 2007 - v1.0 of PASIF xml output specification
+ -->
+
+<!--
+  Copyright (c) 2006,2007 Michael E Sparks
+  All rights reserved.
+
+  Permission to use, copy, modify, and distribute this software for any
+  purpose with or without fee is hereby granted, provided that the above
+  copyright notice and this permission notice appear in all copies.
+
+  THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+  WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+  MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+  ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+  WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+  ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+  OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ -->
+
+<start>
+  <element name="PASIF_output"
+           ns="http://www.pasif.org/PASIF_output/">
+    <attribute name="PASIF_XML_version"/>
+    <oneOrMore>
+      <element name="locus">
+        <attribute name="id"/>
+        <choice>
+          <element name="none">
+            <empty/>
+          </element>
+          <oneOrMore>
+            <element name="isoform">
+              <attribute name="serial"/>
+              <optional>
+                <attribute name="score"/>
+              </optional>
+              <oneOrMore>
+                <element name="exon">
+                  <attribute name="start"/>
+                  <attribute name="stop"/>
+                </element>
+              </oneOrMore>
+              <zeroOrMore>
+                <!-- MetWAMer is a post-processing system that refines
+                     translation start and stop sites of predicted
+                     protein sequences.  It is possible to append
+                     multiple MetWAMer_annot elements, derived using
+                     different prediction methods.
+                  -->
+                <element name="MetWAMer_annot">
+                  <attribute name="method"/>
+                  <attribute name="orf_amino_bound">
+                    <data type="integer"/>
+                  </attribute>
+                  <attribute name="start_codon">
+                    <data type="integer"/>
+                  </attribute>
+                  <attribute name="stop_codon">
+                    <data type="integer"/>
+                  </attribute>
+                  <optional>
+                    <attribute name="best_TIS_score">
+                      <data type="decimal"/>
+                    </attribute>
+                    <attribute name="Met_seen_p">
+                      <choice>
+                        <value>0</value>
+                        <value>1</value>
+                      </choice>
+                    </attribute>
+                  </optional>
+                </element>
+              </zeroOrMore>
+            </element>
+          </oneOrMore>
+        </choice>
+      </element>
+    </oneOrMore>
+  </element>
+</start>
+
+</grammar>

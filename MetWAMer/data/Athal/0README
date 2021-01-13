@@ -1,0 +1,40 @@
+
+-- Basic workflow using the MetWAMer package --
+
+Michael E Sparks (mespar1@gmail.com)
+31 October 2007
+
+(Utility-specific usage conventions can be observed
+by executing each program without parameters.)
+
+1) Having a set of fasta-formatted genomic sequences,
+   derive indexFasSeq'ed indices for them, using
+   indexFasSeq
+
+2) Having access to the TIGR XML-formatted annotation
+   for those genomic templates, derive training data
+   using parse_tigrxml_cds
+
+3) If clustering is wanted, extract the TISs and cluster
+   using calc_medoids.  The resulting indices can be
+   used to partition data accordingly.
+
+4) Develop a negative TIS WAM using train_MetWAM
+
+5) Develop positive TIS WAM(s) using train_MetWAM
+
+6) If clustering, extract TISs and develop PWMs
+   using train_MetPWM
+
+7) Develop Markov chains using train_MC
+
+8) For the perceptron-based method, derive feature
+   vector representations of training instances using
+   build_featvecs
+
+9) For the perceptron-based method, train the neuron
+   using train_perceptron
+
+10) Identify potential TISs in a set of fasta-formatted
+    sequences using MetWAMer.CDS
+

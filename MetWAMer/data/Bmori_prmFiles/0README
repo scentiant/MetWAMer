@@ -1,0 +1,26 @@
+# Michael E. Sparks (michael.sparks2@usda.gov), 30 December 2020
+
+# here, we set links to all parameter files needed by MetWAMer
+# in one location, using naming conventions shown in ../Athal/.
+ln -s ../Bmori/Bmori.CHI2 MCparms.CHI2
+ln -s ../Bmori/Bmori.CHI2.sigunit neur.CHI2.sigunit
+ln -s ../Bmori/Bmori.parmsF.MetWAM parmsF.MetWAM
+ln -s ../Bmori/Bmori.parmsT.MetWAM parmsT.MetWAM
+for i in `seq 1 3`; do
+  ln -s ../Bmori/Bmori.${i}.CHI2.sigunit neur.CHI2.sigunit.${i}
+  ln -s ../Bmori/Bmori.parmsT.${i}.MetWAM parmsT.MetWAM.${i}
+  ln -s ../Bmori/Bmori.${i}.MetPWM parms.MetPWM.${i}
+done
+ln -s ../Bmori/Bmori.medoids.xml meds.medoids.xml
+
+# for completeness, we also link to bssm files for potential
+# use with GenomeThreader or GENESEQER (tools with which MetWAMer
+# was designed to interact with, although it can be used with
+# coding sequences derived from any source).
+ln -s ../Bmori/splice_site_models/gthbssmbuildDir/Bombyx_per_BSSM4GSQ.bssm \
+  bssm_per_BSSM4GSQ.bssm
+ln -s ../Bmori/splice_site_models/BSSM4GSQ_forBombyx/silkworm_bssm4gsq.bssm.4GSQheaders.txt \
+  bssm_per_BSSM4GSQ.codeForHeaders.txt
+ln -s ../Bmori/splice_site_models/Bombyx_mori_gth.bssm \
+  bssm_per_gthbssmtrain.bssm
+

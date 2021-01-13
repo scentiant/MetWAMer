@@ -1,0 +1,25 @@
+# Michael E. Sparks (michael.sparks2@usda.gov), 20 December 2020
+
+ln -s ../BSSM4GSQ_forBombyx/output/
+ln -s ../bmori.md5map.dat
+ln -s ../GCF_000151625.1_ASM15162v1_genomic_hmask100Kmin.fna.md5
+
+mkdir -p BSSM_train_dir/GT_donor
+mkdir BSSM_train_dir/GC_donor
+mkdir BSSM_train_dir/AG_acceptor
+
+for t in T0 T1 T2 F0 F1 F2 Fi; do
+  cat output/training_data/GT_AG/don/${t}_don | \
+    ./retrofit_headers.pl > BSSM_train_dir/GT_donor/$t
+  cat output/training_data/GC_AG/don/${t}_don | \
+    ./retrofit_headers.pl > BSSM_train_dir/GC_donor/$t
+  cat output/training_data/G?_AG/acc/${t}_acc | \
+    ./retrofit_headers.pl > BSSM_train_dir/AG_acceptor/$t
+done
+
+# envars were set earlier, in ../0README
+gthbssmbuild \
+  -datapath `pwd`/BSSM_train_dir/ \
+  -bssmfile Bombyx_per_BSSM4GSQ.bssm \
+  -gtdonor -gcdonor -agacceptor
+

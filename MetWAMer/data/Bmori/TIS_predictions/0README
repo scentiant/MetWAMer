@@ -1,0 +1,66 @@
+
+# Michael E. Sparks (michael.sparks2@usda.gov), 13 January 2021
+
+# A more detailed example of how to use MetWAMer in a genome
+# annotation projects is provided in the Msexta_example directory.
+# This directory provides end users with a rough sketch of how MetWAMer
+# can be used to predict TISs in putative coding sequences for
+# which supporting genomic DNA is available.
+# In cases where such supporting data aren't at hand, MetWAMer
+# can still be used: consider the LLKR, WLLKR or Bayes
+# methods (see the Sparks and Brendel 2008 paper for details).
+# In the tutorial leading up to this point, we have trained the
+# PFCWLLKR method. Training other methods exhibits more or less
+# the same gestalt, though the details differ. As mentioned in
+# the package's manual page, invoking executables from
+# MetWAMer/bin/ sans arguments provides extensive help listings
+# to assist with learning just what those differing details are.
+
+# 1) start with a set of open reading frames, which we define
+# as spans of DNA encoding amino acids, but not stop codons.
+# Ideally, these will have been maximally extended both
+# upstream and downstream in a genomic context, but this is
+# not necessary.
+# Also, MetWAMer is agnostic w/r/t how these are developed.
+samples_to_demo.original_ORFs.fna
+
+# 2) extend ORFs with flanking gDNA both upstream and downstream by
+# (UPSTREXTENT + CONTENTSWATHLEN) and (DOWNSTREXTENT + CONTENTSWATHLEN),
+# respectively (see macro definitions in MetWAMer/include/MetWAM_utils.h).
+# (The end user is responsible for preparing these and ensuring
+# their correctness.)
+samples_to_demo.ORFs_withFlanks.fna
+
+# 3) predict TISs in these instances (using static-WAM-PFCWLLKR)
+# (Note that I randomly sampled cases used in this tutorial
+# and sorted based on predicted TIS coordinates--the monotonically
+# increasing order of MetWAMer results is not relevant.)
+../../../bin/MetWAMer.CDS \
+  -s \
+  -k 3 \
+  -d 2 \
+  -l ../../Bmori_prmFiles/meds.medoids.xml \
+  -a 4 \
+  -m ../../Bmori_prmFiles/parmsT.MetWAM \
+  -x ../../Bmori_prmFiles/parmsF.MetWAM \
+  -g samples_to_demo.ORFs_withFlanks.fna \
+  -n ../../Bmori_prmFiles/neur.CHI2.sigunit \
+  -t 1 \
+  -c 3 ../../Bmori_prmFiles/MCparms.CHI2 \
+  2> mult3.errors \
+  1> samples_to_demo.MetWAMer_predictions.txt
+
+# 4) clip 5'-UTRs from ORFs to yield coding sequences,
+# adjusting genomic coordinate information to reflect any changes.
+# Of course, the user can decide whether or not to accept a
+# predicted TIS given additional criteria. For instance,
+# the predicted TIS could be unconditionally accepted if
+# occurring in the first 45 bases of the ORF or residing
+# in the first 20% of the overall ORF length.
+# (The end user is responsible for performing this and ensuring
+# its correctness.)
+samples_to_demo.adjusted_CDSs.fna
+
+# 5) translate to polypeptides (using, say, transeq from EMBOSS)
+samples_to_demo.translated_CDSs.fpa
+

@@ -1,0 +1,252 @@
+
+# Michael E. Sparks (michael.sparks2@usda.gov), 30 December 2020
+
+# This is a step-by-step record of how MetWAMer and
+# GenomeThreader were retrained to become Bombyx mori-aware.
+# With care, it should be possible to adapt this workflow
+# for other species.
+
+mkdir NCBI_annots
+cd NCBI_annots
+for f in GCF_000151625.1_ASM15162v1_genomic.fna.gz \
+         GCF_000151625.1_ASM15162v1_cds_from_genomic.fna.gz \
+         GCF_000151625.1_ASM15162v1_protein.faa.gz; do
+  wget https://ftp.ncbi.nlm.nih.gov/genomes/all/annotation_releases/7091/102/\
+GCF_000151625.1_ASM15162v1/$f
+  gunzip $f
+done
+cd ..
+
+mkdir gdna_inds
+cd gdna_inds/
+cat ../NCBI_annots/GCF_000151625.1_ASM15162v1_genomic.fna | \
+  ../merge_fasta.pl | ../split_fasta_file.pl 
+cd ..
+
+# noncoding data (introns) for training markov chain content sensors.
+# only CDSs of at least 100bp are considered (additional filters
+# will be applied later in the protocol, but imposing something
+# more stringent here would be possible, as well)
+cat NCBI_annots/GCF_000151625.1_ASM15162v1_cds_from_genomic.fna | \
+  ./merge_fasta.pl | \
+  ./filter_fasta_by_length.pl 100 | \
+  ./extract_introns.pl > Bmori.noncod-pre.fna
+# Note: the following was printed on STDERR (maybe it's a legitimate
+# instance of trans-splicing, but it's more likely an annotation error):
+# Problem detected at line 45075 (ignoring gene) : >lcl|NC_002355.1_cds_NP_059480.1_22559 [gene=COX3] [db_xref=GeneID:4266952] [protein=cytochrome c oxidase subunit III] [protein_id=NP_059480.1] [location=join(15095..15643,1..240)] [gbkey=CDS]
+
+../../IMMpractical/training_data/utilities/clean_data.pl \
+  < Bmori.noncod-pre.fna > Bmori.noncod.fna 2> /dev/null
+./fasta2convertable.pl < Bmori.noncod.fna | shuf > Bmori.noncod.permuted.tmp
+#sanity check:
+#$ ./fasta2convertable.pl < Bmori.noncod.fna | sort | md5sum
+#ff6400f8f394a90a07dd99fb715a850b  -
+#$ cat Bmori.noncod.permuted.tmp | sort | md5sum
+#ff6400f8f394a90a07dd99fb715a850b  -
+
+split -n r/10 --numeric-suffixes=1 \
+  Bmori.noncod.permuted.tmp Bmori.noncod.permuted.tmp.
+rm Bmori.noncod.permuted.tmp
+for f in Bmori.noncod.permuted.tmp.??; do
+  ./convert2fasta.pl < $f \
+    > Bmori.noncod.fna.`echo $f | rev | cut -f 1 -d '.' | rev`
+  rm $f
+done
+cat Bmori.noncod.fna.0[1-8] > Bmori.noncod.fna.D
+rm Bmori.noncod.fna.0[1-8]
+mv Bmori.noncod.fna.09 Bmori.noncod.fna.H
+mv Bmori.noncod.fna.10 Bmori.noncod.fna.T
+#$ cat Bmori.noncod.fna.[DHT] | sort | md5sum
+#06d8c88e339392e62127b70f6af8b1b4  -
+#$ cat Bmori.noncod.fna | sort | md5sum
+#06d8c88e339392e62127b70f6af8b1b4  -
+
+# CDSs before adding in flanking content...
+cat NCBI_annots/GCF_000151625.1_ASM15162v1_cds_from_genomic.fna | \
+  ./merge_fasta.pl | \
+  ./filter_fasta_by_length.pl 100 | \
+  ./extract_exons.pl 1 \
+  1> first_time.cds.fna \
+  2> errors_on_first_time.txt
+
+# sanity check (headers will differ, but seqs should not)
+grep '^>' first_time.cds.fna | awk '{print $1}' | sed 's/^>//' | \
+  ./extract_fasta_seqs.pl \
+  <( ./merge_fasta.pl NCBI_annots/GCF_000151625.1_ASM15162v1_cds_from_genomic.fna ) \
+  > originals.cds.fna
+diff <(grep -v '^>' first_time.cds.fna) <(grep -v '^>' originals.cds.fna)
+
+# we set a floor on CDS lengths above, but let's run the cleaning tool anyhow.
+../../IMMpractical/training_data/utilities/clean_data.pl \
+  < first_time.cds.fna > Bmori.codseq.fna 2> /dev/null
+../../IMMpractical/training_data/utilities/data_partition.sh \
+  10 2 Bmori.codseq.fna
+
+cat Bmori.codseq.fna.shuffled.0[1-8] > Bmori.codseq.fna.D
+rm Bmori.codseq.fna.shuffled.0[1-8]
+mv Bmori.codseq.fna.shuffled.09 Bmori.codseq.fna.H
+mv Bmori.codseq.fna.shuffled.10 Bmori.codseq.fna.T
+#$ cat Bmori.codseq.fna.[DHT] | sort | md5sum
+#56d1433348d504e4ff15ba4e1234775c  -
+#$ cat Bmori.codseq.fna | sort | md5sum
+#56d1433348d504e4ff15ba4e1234775c  -
+
+# this next statement is optional, and the prm file's labeled
+# "*_noTest" in the sense that the MC wasn't trained with
+# the testing partition data (a cross-validation concept),
+# and can be used to classify test sequences with use_MM.x.
+# Note that MetWAMer uses a specially compiled IMMpractical
+# library (see the manual, MetWAMer/doc/MetWAMer.1),
+# and this is _not_a_recommended_practice_ for performing
+# GenMark-style fragment classification.
+../../bin/train_MC 3 \
+  Bmori.codseq.fna.D Bmori.noncod.fna.D \
+  Bmori.codseq.fna.H Bmori.noncod.fna.H \
+  Bmori_noTest 1>/dev/null
+
+# for use with MetWAMer, we train with all Bmori data.
+# MetWAMer doesn't utilize the noncoding model,
+# but we'll train it just the same.
+cat Bmori.codseq.fna.[HT] > Bmori.codseq.fna.HT
+cat Bmori.noncod.fna.[HT] > Bmori.noncod.fna.HT
+../../bin/train_MC 3 \
+  Bmori.codseq.fna.D Bmori.noncod.fna.D \
+  Bmori.codseq.fna.HT Bmori.noncod.fna.HT \
+  Bmori 1>/dev/null
+rm Bmori.codseq.fna.HT Bmori.noncod.fna.HT
+
+# ...after adding in flanking content
+cat NCBI_annots/GCF_000151625.1_ASM15162v1_cds_from_genomic.fna | \
+  ./merge_fasta.pl | \
+  ./filter_fasta_by_length.pl 100 | \
+  ./extract_exons.pl \
+  > second_time.cds.fna \
+  2> errors_on_second_time.txt
+
+# ensure canonical translation start & stop
+./check_for_start_stop.pl < second_time.cds.fna \
+  > third_time.cds.fna 2> ignored.cds.fna
+# we set a floor on CDS lengths above, and flanks have been added,
+# but let's run the cleaning tool anyhow.
+../../IMMpractical/training_data/utilities/clean_data.pl \
+  < third_time.cds.fna > Bmori.codseq.withFlanks.fna 2> /dev/null
+
+# train and verify weight array matrices
+../../bin/train_MetWAM -h 1 -f Bmori.codseq.withFlanks.fna \
+  -r Bmori.parmsT -o 102 -e 99 -l 97
+../../bin/print_MetWAM Bmori.parmsT.MetWAM 2>&1 | \
+  ../../src/plscripts/verify_pmf.pl
+
+../../bin/train_MetWAM -h 0 -f Bmori.codseq.withFlanks.fna \
+  -r Bmori.parmsF -o 102 -e 99 -l 97
+../../bin/print_MetWAM Bmori.parmsF.MetWAM 2>&1 | \
+  ../../src/plscripts/verify_pmf.pl
+
+diff --side-by-side \
+  <(../../bin/print_MetWAM Bmori.parmsT.MetWAM 2>&1) \
+  <(../../bin/print_MetWAM Bmori.parmsF.MetWAM 2>&1) | \
+  less # for curious folks
+
+# on to training the single-layer neural network
+../../bin/build_featvecs \
+  -o 102 -e 99 -l 97 \
+  -m Bmori.parmsT.MetWAM \
+  -x Bmori.parmsF.MetWAM \
+  -f Bmori.codseq.withFlanks.fna \
+  -a 3 Bmori.CHI2 \
+  1> Bmori.pos_featvecs.dat \
+  2> Bmori.neg_featvecs.dat
+
+(cat Bmori.pos_featvecs.dat ; \
+ shuf Bmori.neg_featvecs.dat | \
+ tail -n `wc -l Bmori.pos_featvecs.dat | \
+ awk '{print $1}'`) \
+  > Bmori.featvecs.dat
+
+../../bin/train_perceptron 1 1E-6 50000 \
+  Bmori.featvecs.dat Bmori 3 \
+  2> sigmoidUnitLog &
+tail -f sigmoidUnitLog # take a coffee break...
+
+# TISs for clustering
+cat Bmori.codseq.withFlanks.fna | \
+  perl -e 'while(<>){ print $_; $_=<>; /^\w{96}(\w{11})\w/; print "$1\n"; }' \
+  > TIS_for_PWM.fna
+alias nonred="\
+${PWD}/merge_fasta.pl | \
+${PWD}/fasta2convertable.pl | \
+sort | \
+${PWD}/squash.pl | \
+${PWD}/convert2fasta.pl | \
+${PWD}/columnize_fasta.pl"
+cat TIS_for_PWM.fna | nonred > TIS_for_PWM.nonred.fna
+../../bin/calc_medoids 3 TIS_for_PWM.nonred.fna Bmori > Bmori_clusts.dat # take a lunch break...
+
+# the following gives a sense of what medoid (last col) a tmp id (2nd col) corresponds to
+./partition_clues.pl Bmori.medoids.xml Bmori_clusts.dat | sort -k2,2n | less
+# edit the sed substitutions in the following command given info learned above
+./partition_clues.pl Bmori.medoids.xml Bmori_clusts.dat | sort -k2,2n | \
+  awk '{print $3,"\t",$2}' | sed 's/ //g' | \
+  sed 's/6269/1/' | \
+  sed 's/36/2/' | \
+  sed 's/7028/3/' \
+  > TIS_to_medoid_mapping.txt
+
+# read the code if curious, but the following scripts partition
+# the data on the basis of the medoid mapping prepared above.
+./split_flankedCDSs.pl
+./split_TIS4PWM.pl
+
+# perform tranche-specific training
+for i in `seq 1 3`; do
+  ../../bin/train_MetWAM -h 1 -f Bmori.codseq.withFlanks.${i}.fna \
+    -r Bmori.parmsT.$i -o 102 -e 99 -l 97
+  ../../bin/print_MetWAM Bmori.parmsT.${i}.MetWAM 2>&1 | \
+    ../../src/plscripts/verify_pmf.pl
+
+  # use a one-size-fits-all negative WAM (_the_ null distribution)
+
+  ../../bin/train_MetPWM TIS_for_PWM.${i}.fna Bmori.${i}
+
+  ../../bin/build_featvecs \
+    -o 102 -e 99 -l 97 \
+    -m Bmori.parmsT.${i}.MetWAM \
+    -x Bmori.parmsF.MetWAM \
+    -f Bmori.codseq.withFlanks.${i}.fna \
+    -a 3 Bmori.CHI2 \
+    1> Bmori.pos_featvecs.${i}.dat \
+    2> Bmori.neg_featvecs.${i}.dat
+
+  (cat Bmori.pos_featvecs.${i}.dat ; \
+   shuf Bmori.neg_featvecs.${i}.dat | \
+   tail -n `wc -l Bmori.pos_featvecs.${i}.dat | \
+   awk '{print $1}'`) \
+    > Bmori.featvecs.${i}.dat
+
+  ../../bin/train_perceptron 1 1E-6 100000 \
+    Bmori.featvecs.${i}.dat Bmori.${i} 3 \
+    2> sigmoidUnitLog.${i} &
+done
+
+# when the three perceptron training jobs complete, reclaim some disk space:
+(for f in `ls | grep 'fna\|featvec\|errors_on\|clusts.dat\|UnitLog\|mapping'`; do
+  xz -T 0 $f; done) & # you may prefer to remove the files instead
+find gdna_inds/ -name "*.fas" | xargs xz -T 0 &
+find gdna_inds/ -name "*.ind" | xargs rm
+
+# now, let's train splice site models for use with either
+# GenomeThreader or GENESEQER (tools whose output MetWAMer.gthXML
+# was expressly designed to post-process). This isn't a requirement,
+# though, and MetWAMer.CDS is entirely neutral w/r/t tools
+# used to generate its input
+cd splice_site_models && less 0README # do stuff there, return here
+
+# in the following, we set symlinks to trained parameter files
+# using naming conventions set when MetWAMer was developed
+# (which can be seen in the ../Athal/ directory, for instance).
+cd ../Bmori_prmFiles/ && less 0README # see stuff there, return here
+
+# having trained the system, see how to use it to predict TISs
+cd TIS_predictions/ && less 0README
+cd TIS_predictions/Msexta_example/ && less 0README
+

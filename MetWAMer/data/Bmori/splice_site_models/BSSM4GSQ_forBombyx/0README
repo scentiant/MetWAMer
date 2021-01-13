@@ -1,0 +1,24 @@
+# Michael E. Sparks (michael.sparks2@usda.gov), 22 December 2020
+
+cd src/ ; make ; cd -
+for f in ../split_gdna/*.fas; do ln -s ../../$f input/fas/`basename $f | sed 's/\.1//'`; done
+for f in ../consensus/*.xml; do ln -s ../../$f input/gsq/`basename $f .1.con.xml`.xml; done
+
+# optionally, if you have jing installed (https://relaxng.org/jclark/jing.html ,
+# ``sudo apt install jing libbatik-java libavalon-framework-java" ),
+# assert the gthxml documents are grammatically sound:
+for f in input/gsq/*.xml; do jing ../../../../specs/GenomeThreader.rng $f; done
+
+then run ./Mktraindata.silkworm.sh *TWICE*:
+  first w/ $DON="GT" (line 43) & again w/ $DON="GC"
+this generates results in the ./output/ directory
+each invocation took ~30 min on my system
+
+then run ./Mkbssmparm.sh, should you wish to integrate your
+models into GENESEQER header files (see BSSM4GSQ's doc/Readme.pdf file).
+#$ ./src/plscripts/verify_pmf.pl < silkworm_bssm4gsq.bssm.ascii
+#0.0000 0.0000 0.0000 0.0000
+./src/plscripts/punctuation.pl \
+  < silkworm_bssm4gsq.bssm.ascii \
+  > silkworm_bssm4gsq.bssm.4GSQheaders.txt
+

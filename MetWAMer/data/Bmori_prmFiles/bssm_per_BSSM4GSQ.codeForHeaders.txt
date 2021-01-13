@@ -1,0 +1,1 @@
+../Bmori/splice_site_models/BSSM4GSQ_forBombyx/silkworm_bssm4gsq.bssm.4GSQheaders.txt

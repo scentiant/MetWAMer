@@ -1,0 +1,184 @@
+\documentclass[11pt]{article}
+\begin{document}
+
+% This file contains markup for the BSSM4GSQ user manual.
+
+\title{BSSM4GSQ code package}
+\author{Michael E Sparks}
+\date{\today}
+\maketitle
+
+\section{Getting Started}
+This software facilitates generation of splice site probabilities for
+use with \texttt{GeneSeqer}, and training data with which to
+build splice site parameters using the \texttt{gthbssmbuild}
+tool in the \texttt{GenomeThreader} package.
+\texttt{BSSM4GSQ} can process either plain text \texttt{GeneSeqer}
+or gthXML v1.0 (or later) output.
+gthXML output can be produced natively by the \texttt{gth}
+program of \texttt{GenomeThreader}, and can be produced from plain text
+\texttt{GeneSeqer} output using the \texttt{GSQ2XML.pl} script,
+available from either \break
+\texttt{http://www.genomethreader.org} or \break
+\texttt{http://www.public.iastate.edu/$\sim$mespar1/gthxml/}.
+The end user may wish to study the following reports prior to
+using this software:
+\begin{enumerate} 
+  \item
+  Brendel V, Xing L, Zhu W. (2004) Gene structure prediction from consensus
+  spliced alignment of multiple ESTs matching the same genomic locus.
+  \emph{Bioinformatics}. \textbf{20}:1157-69.
+  \item
+  Sparks ME and Brendel V. (2005) Incorporation of splice site probability models
+  for non-canonical introns improves gene structure prediction in plants.
+  \emph{Bioinformatics}. \textbf{21}:iii20-iii30.
+\end{enumerate}
+
+\section{Directions}
+
+\begin{enumerate}
+  \item
+  Verify that the following executables are present in the bin/ directory.
+
+  \begin{enumerate}
+    \item
+    \texttt{indexFasSeq}
+    \item
+    \texttt{BSSM\_build}
+    \item
+    \texttt{BSSM\_print}
+  \end{enumerate}
+
+  If any of these are absent, cd to the src/ directory and issue ``make".
+  (This step is, however, optional, as the \texttt{Mktraindata.sh} and
+  \texttt{Mkbssmparm.sh} scripts will build the files, when necessary.)
+
+  \item
+  There are two subdirectories in the
+  input directory, gsq/ and fas/.  You absolutely must meet the
+  following requirements to make the code work.
+
+  \begin{enumerate}
+    \item
+    There must be a one-to-one correspondence between files in
+    these two directories.
+    \item
+    Files in the fas/ directory must have an extension of ``.fas"
+    and those in the gsq/ directory must have one of either ``.gsq"
+    or ``.xml", for plain text \texttt{GeneSeqer} or gthXML formatted
+    data files, respectively.  You cannot mix plain text and gthXML
+    input files.
+    \item
+    The basename prefixes of cognate fas/gsq file pairs, i.e., the
+    substrings prior to ``.gsq" or ``.fas", must be identical.
+    \item
+    All references made to a genomic template in the spliced alignment
+    output file must be identical to the file's ``file handle"
+    mentioned above.  This essentially mandates that each fas/gsq
+    cognate file pair correspond to one genomic sequence and its
+    spliced alignment annotation, respectively.
+  \end{enumerate}
+
+  There are sample training data in the input/sample/ directory.  These
+  data will not generate any meaningful probabilities, and are
+  only intended to demo the system.
+   
+  \item
+  Edit \texttt{Mktraindata.sh} such that the FORMAT variable is
+  set correctly for the files placed in the input/gsq/ directory; this is
+  described explicitly in the header of the script.
+  Run \texttt{Mktraindata.sh}.  This produces exon and intron data, sorted
+  according to phase and placed in the output/exons\_introns/ directory,
+  and sampled, phase-sorted BSSM training data placed in the
+  output/training\_data/ directory.  In each of these directories, data
+  will be written to a subdirectory named according to the
+  donor/acceptor dinucleotide termini trained for.  (If this is
+  unclear, inspect the contents of the output directories after
+  unpacking this code, run the script, and look at them again.)
+
+  \texttt{Mktraindata.sh} processes GT-AG introns by default.
+  For other types, tune the DON and ACC variables (set these in CAPITAL letters!)
+  and run it again.  This will not overwrite any existing output in
+  the training\_data/ or exons\_introns/ directories so long as a
+  different DON/ACC combination is used.  Rerunning the script
+  using a DON/ACC pair whose results were already recorded will
+  cause the original data to be overwritten.
+
+  \item
+  Run \texttt{Mkbssmparm.sh}.  The script will solicit some configuration
+  information:
+
+  \begin{enumerate}
+    \item
+    Name of output file (``foo.bssm")
+    \item
+    Root directory of training data.  (If you haven't done
+    anything non-standard up to this point, it should be safe
+    to just say ``y" here.)
+    \item
+    Build GT model?  For GT-AG parameterizations.  (If you trained
+    for these intron types, responding with ``y" will put the
+    probabilities in your *.bssm file.  Else, say ``n".)
+    \item
+    Build GC model?  For GC-AG parameterizations.  (If you trained
+    for these intron types, responding with ``y" will put the
+    probabilities in your *.bssm file.  Else, say ``n".)
+    \item
+    File to write ascii data to (``foo.bssm.ascii")
+  \end{enumerate}
+
+  (Users of the \texttt{GenomeThreader} package
+  (\texttt{http://www.genomethreader.org})
+  should note that these binary *.bssm files are \textbf{not compatible} with
+  those used by that system.  Code in \texttt{BSSM4GSQ} implementing the
+  weight array matrix development routines
+  was adapted to implement the \texttt{gthbssmbuild} program
+  of \texttt{GenomeThreader}; given input data like that produced in steps
+  1-3 above, \texttt{gthbssmbuild} will generate \texttt{GenomeThreader}-compatible
+  binary *.bssm files.
+  Please refer to the \texttt{GenomeThreader} manual or
+  contact Gordon Gremme at \texttt{gremme@zbh.uni-hamburg.de} for details.)
+
+  The \texttt{BSSM\_print} utility allows the user to generate an ascii
+  representation of the trained splice site probability matrices.
+  The *.bssm.ascii file presents the weight array matrices in the following
+  order:
+
+  \begin{verbatim}
+     for TERMINAL in (0-1):
+       for HYPOTHESIS in (0-6):
+         print transition probabilities
+  \end{verbatim}
+
+  where for TERMINAL, 0 and 1 index donor and acceptor sites,
+  respectively; and for HYPOTHESIS, 0, 1, 2, 3, 4, 5, 6 index the T1,
+  T2, T0, F1, F2, F0 and Fi hypotheses, respectively.
+
+  The user will, unfortunately, have to manually splice the new probabilities
+  into the daPbm7.* header files included with the \texttt{GeneSeqer} source
+  distribution (adjust the GU\_7/GC\_7 and AG\_7 arrays, the name\_model
+  array, and the NMDLS macro accordingly) to incorporate the models
+  into the software.  There is a script provided in the src/plscripts/ directory,
+  \texttt{punctuation.pl}, that will assist in adding syntactical markup
+  to allow copying/pasting results into the header files, e.g.,
+
+  \begin{verbatim}
+$ cat something.bssm.ascii | ./punctuation.pl
+  \end{verbatim}
+  You can verify that your parameter file contains valid probability
+  mass distributions by using the \texttt{verify\_pmf.pl} script
+  in the src/plscripts/ directory, e.g.,
+
+  \begin{verbatim}
+$ cat something.bssm.ascii | ./verify_pmf.pl
+  \end{verbatim}
+  Please see the commentary in that file for more details;
+  output of a row of zeros is expected, and does not signal
+  an error.
+\end{enumerate}
+
+\section{Contact Info}
+If you have questions, concerns, etc.,
+please email me at \texttt{mespar1@iastate.edu}.
+
+\end{document}

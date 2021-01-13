@@ -1,0 +1,121 @@
+.\" Man page for the IMMpractical library.
+.\" Process with `groff -man -Tascii immpractical.3 | less`
+.\"
+.\" Copyright 2005 Michael E Sparks (mespar1@gmail.com)
+.\"
+.\" This library is free software; you can redistribute it and/or
+.\" modify it under the terms of the GNU Lesser General Public
+.\" License as published by the Free Software Foundation; either
+.\" version 2.1 of the License, or (at your option) any later version.
+.\"
+.\" This library is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+.\" Lesser General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU Lesser General Public
+.\" License along with this library; if not, write to the Free Software
+.\" Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+.TH IMMpractical 3 "20 July 2013" "version 1.1" "Library Documentation"
+.SH NAME
+maintrain,
+.br
+import_fo_probs, import_imm_probs, import_dm_probs,
+.br
+import_fo_probsQT, import_imm_probsQT, import_dm_probsQT,
+.br
+FOprob, IMMprob, DMMMprob, FOprobQT, IMMprobQT, DMMMprobQT \-
+.sp
+Functions for training and using interpolated, fixed-order, and dynamically
+modulating Markov models for gene prediction applications.
+.SH SYNOPSIS
+.nf
+.B #include "immpractical.h"
+.sp
+.BI "int maintrain(int "argc ",char *" argv[] );
+.sp
+.BI "void import_fo_probs(char *" filename ",foprobT *" probs );
+.sp
+.BI "void import_imm_probs(char *" filename ",immprobT *" probs );
+.sp
+.BI "void import_dm_probs(char *" filename ",dmprobT *" probs );
+.sp
+.BI "void import_fo_probsQT(char *" filename ",foprobT *" probs ",qtboundsT *" bounds ");
+.sp
+.BI "void import_imm_probsQT(char *" filename ",immprobT *" probs ",qtboundsT *" bounds ");
+.sp
+.BI "void import_dm_probsQT(char *" filename ",dmprobT *" probs ",qtboundsT *" bounds ");
+.sp
+.BI "double FOprob(char *" input ",foprobT *" probs ",int " model ",
+.BI int " threeper",int " shadow");
+.sp
+.BI "double IMMprob(char *" input ",immprobT *" probs ",int " model ",
+.BI int " threeper",int " shadow");
+.sp
+.BI "double DMMMprob(char *" input ",dmprobT *" probs ",int " model ",
+.BI int " cloudtype",int " threeper",int " shadow");
+.sp
+.BI "double FOprobQT(char *" input ",foprobT *" probs ",qtboundsT *" bounds ",
+.BI int " model ",int " testwindowgc ");
+.sp
+.BI "double IMMprobQT(char *" input ",immprobT *" probs ",qtboundsT *" bounds ",
+.BI int " model ",int " testwindowgc ");
+.sp
+.BI "double DMMMprobQT(char *" input ",dmprobT *" probs ",qtboundsT *" bounds ",
+.BI int " cloudtype",int " model",int " testwindowgc ");
+.sp
+.SH DESCRIPTION
+The IMMpractical library currently supports either binary or three-periodic
+classification, the latter optionally modeling also for the shadow strand
+(see the Makefile for details), of nucleic acid sequences and implements the
+top-down and bottom-up deleted interpolated Markov model training algorithms, the
+chi-square interpolated Markov model training algorithm, and a standard
+fixed-order Markov model--all for orders 0 through 5, inclusive.  Also, dynamically
+modulating Markov models (DMMMs) are implemented for order 5 using the pseudocount
+adjusting fixed-order routine for computing Markov chain point estimates--clouds
+can be defined using either variance- or range-based approaches. A partially
+modulating mixture model is also implemented that uses DMMMs to calculate coding model
+likelihoods, and fixed-order Markov models to compute the likelihood under
+the noncoding model. Quantile-specific training for each of these
+algorithms is supported under a 5th-order Markov model, modeling both strands
+inhomogeneously for the coding hypothesis. Quantile-specific testing can be conducted
+by either selecting a quantile-specific set of parameters to use based on overall
+G+C composition of a test sequence, or by selecting quantile-specific parameters
+based on a sliding window of 100nt's.  See the discussion concerning preprocessor
+definitions (for better or worse, I've used them extensively!) in the Makefile
+for details on how to build the library for differing applications.
+.sp
+The main training function
+.RI "("maintrain ")"
+in the library will generate a binary parameterization
+file, per the training algorithm specified by the user,
+as binary output.  This binary parameter file can be imported
+into main memory
+.RI "("import_fo_probs ","import_imm_probs ","import_dm_probs ","
+.IR "import_fo_probsQT", "import_imm_probsQT", "import_dm_probsQT") "
+and used by routines
+.RI "("FOprob ","IMMprob ","DMMMprob ","FOprobQT ","IMMprobQT ","DMMMprobQT ")"
+that assess likelihoods of test input sequences.
+.sp
+For more information, please inspect the
+.IR "immpractical.h " header
+file for function usage documentation, as well as the 
+.IR "train_MM.c " and " use_MM.c " driver
+files for examples of their usage from a "top-level".  I've done my best
+to extensively document all the source code, so grokking
+it should hopefully not be an ordeal.
+The methods are partially documented in 
+Sparks, M.E., Brendel, V. and Dorman, K.S. (2007) Markov model variants for appraisal
+of coding potential in plant DNA.
+.I Lecture Notes in Bioinformatics.
+.BR 4463 ":394-405.
+Comprehensive documentation--in particular, comprising the dynamically modulating Markov chain
+variants--is found in Chapter 3 of Sparks, M.E. (2007) Computational annotation of
+eukaryotic gene structures: algorithms development and software systems.
+Ph.D. Thesis, Iowa State University. Publication No. 3289422. ProQuest, Ann Arbor, MI, U.S.A.
+
+.SH AUTHOR
+Michael E Sparks (mespar1@gmail.com)
+.SH PROJECT WEBSITE
+http://sourceforge.net/projects/immpractical

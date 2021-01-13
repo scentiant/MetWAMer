@@ -1,0 +1,151 @@
+.\" Man page for the MetWAMer code package
+.\" Process with `groff -man -T ascii MetWAMer.1 | less` .OR.
+.\"               `man ./MetWAMer.1`
+.\"
+.\" Copyright (c) 2007,2008 Michael E. Sparks
+.\"   (updated 20 December 2020 by MES: michael.sparks2@usda.gov)
+.\" All rights reserved.
+.\"
+.\" Permission to use, copy, modify, and distribute this software for any
+.\" purpose with or without fee is hereby granted, provided that the above
+.\" copyright notice and this permission notice appear in all copies.
+.\"
+.\" THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+.\" WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+.\" MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+.\" ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+.\" WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+.\" ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+.\" OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+
+.TH MetWAMer 1 "20 December 2020" "version 1.3.3" "Documentation for the MetWAMer Package"
+.SH NAME
+build_featvecs
+.br
+calc_medoids
+.br
+eval_MetWAM
+.br
+indexFasSeq
+.br
+MetWAMer.gthXML
+.br
+MetWAMer.CDS
+.br
+parse_pps_codseqs
+.br
+parse_tigrxml_cds
+.br
+print_MetWAM
+.br
+train_MC
+.br
+train_MetPWM
+.br
+train_MetWAM
+.br
+train_perceptron
+.SH SYNOPSIS
+.BR build_featvecs " -- A utility that takes as input a set of training
+data, a trained MetWAM object (preferably trained using
+train_MetWAM on said dataset) and appropriate Markov chain model
+parameterizations (derived using train_MC), and outputs
+feature vectors for use by the train_perceptron utility.
+.sp
+The supplied script, ``file_sampler.NO_replacement.pl'', can be used
+to randomly sample a specified number of instances from these
+results, if desired.
+.sp
+.BR calc_medoids " -- A utility to take a set of same-length nucleotide
+sequences and then compute the k distinct medoids from the set
+under a simple distance metric (here, edit distance).
+.sp
+.BR eval_MetWAM " -- Allows the user to score Met sites in all six frames
+of a set of Fasta-formatted sequences, using supplied start-Met WAMs.
+.sp
+.BR indexFasSeq " -- A utility for building a persistent index of the first
+sequence in a FASTA file; it's typically used to facilitate indexing
+large genomic sequences. It also allows the user to parse nucleotide
+substrings from this sequence and (optionally) translate them
+using the standard genetic code.
+.sp
+.BR MetWAMer.gthXML " -- Extends predicted protein sequences in gthXML
+(or PASIF xml) documents, attempting to identify an optimal reading
+frame; MetWAMer.gthXML updates the xml document used as input with
+its results.
+.sp
+.BR MetWAMer.CDS " -- Given a (possibly maximal) reading frame with
+flanking genomic sequences added to both ends (typically, this will be
+96nt + 5nt + reading_frame + 3nt + 96nt; see UPSTREXTENT,
+DOWNSTREXTENT, and CONTENTSWATHLEN from MetWAMer/include/MetWAM_utils.h
+for details), MetWAMer.CDS attempts
+to predict a TIS.  -1 is returned if no predictions were made
+for an instance; else, the predicted TIS position is reported.
+If the CDS length is not a multiple of three, it is ignored.
+.sp
+.BR parse_pps_codseqs " -- Generates training data from gthXML documents
+for developing start-Methionine WAMs.  It may be necessary to
+post-process results to curtail redundancy.
+.sp
+.BR parse_tigrxml_cds " -- Generates training data from TIGR xml documents
+for developing start-Methionine WAMs.  It may be necessary to
+post-process results to curtail redundancy.
+.sp
+.BR print_MetWAM " -- Dumps a binary MetWAM parameter file--as produced
+using train_MetWAM--to an ASCII representation.
+The supplied script, ``verify_pmf.pl'', can be used to ascertain that
+these data constitute legitimate transition matrices.
+.sp
+.BR train_MC " -- Develops a Markov chain transition probability matrix.
+.sp
+.BR train_MetPWM " -- Develops a trained start-Methionine PWM using TIS
+sequences, output as a binary object.  If compiled with DBGPWM
+defined, an ASCII representation of the PWM will be dumped to
+stderr, also.
+.sp
+.BR train_MetWAM " -- Develops a trained start-Methionine WAM, output
+as a binary object.
+.sp
+.BR train_perceptron " -- Given a set of feature vectors produced by
+build_featvecs, this utility will train a perceptron to
+discriminate between positive and negative instances.  This step
+develops parameters for use in certain models available in
+MetWAMer (e.g., PFCWLLKR).
+.SH DEPENDENCIES
+MetWAMer requires the libxml2 library (www.xmlsoft.org;
+on Ubuntu, issue ``sudo apt install libxml2-dev''),
+and was developed and tested using versions 2.6.23 and 2.9.4
+of this software on a GNU/Linux system.
+Note that, because the DOM is used rather than the SAX, MetWAMer
+(and the parse_* utilities) will require memory roughly linear in
+the size of xml documents to run properly.
+.sp
+Additionally, the IMMpractical library is required
+(http://sourceforge.net/projects/immpractical/),
+of which version 1.0 or later is used (Note: Compile immpractical with
+THREEPERIODIC defined, but not SHADOWSTRAND). Versions 1.3.1 and newer
+of the MetWAMer distribution have this software already bundled in
+and pre-configured.
+.SH ADDITIONAL DOCUMENTATION
+A typical workflow is outlined in the ``0README'' file presented in
+the MetWAMer/data/Bmori/ directory.
+Silkworm- and Arabidopsis-specific parameters are provided
+in the MetWAMer/data/Bmori_prmFiles and MetWAMer/data/Athal
+directories, respectively.
+Please also see the ``MkWAMs.sh'' and ``UseMetWAM.sh'' scripts in
+the package's root directory for usage examples.
+.sp
+A complete description of the methods implemented in this software
+is available in Sparks, M.E. and Brendel, V. (2008)
+MetWAMer: Eukaryotic translation initiation site prediction.
+.I BMC Bioinformatics
+.BR 9 ":381.
+For details about the Markov chain models used in flank contrasting
+prediction methods, please see Sparks, M.E., Brendel, V. and
+Dorman, K.S. (2007) Markov model variants for appraisal of coding
+potential in plant DNA.
+.I Lecture Notes in Bioinformatics.
+.BR 4463 ":394-405.
+
+.SH AUTHOR
+Michael E. Sparks (michael.sparks2@usda.gov)

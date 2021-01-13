@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<kmedoids xmlns="http://www.kmedoids.org" stringsize="11" k="3" error="39228.00">
+  <medoid id="1">TAAAAATGGAT</medoid>
+  <medoid id="2">AAAAAATGGCT</medoid>
+  <medoid id="3">TCAAAATGATG</medoid>
+</kmedoids>
