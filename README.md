@@ -4,6 +4,6 @@ MetWAMer is a bioinformatics application used to predict translation initiation 
 
 The software was described in Sparks, M.E. and Brendel, V. (2008) MetWAMer: eukaryotic translation initiation site prediction. *BMC Bioinformatics*. **9**:381 (https://doi.org/10.1186/1471-2105-9-381). Supporting data from that report, as well as versioned releases of the code, are available at http://brendelgroup.org/SB08B/.
 
-This repository provides a "rolling snapshot" of the package. As of 13 January 2021, it includes demonstrations of how an end user might train the system using publicly available data from *Bombyx mori* and then use the results for predicting TISs in *Manduca sexta* datasets.
+This repository provides a "rolling snapshot" of the package, meant to supplement the aforementioned site. As of 13 January 2021, it includes demonstrations of how an end user might train the system using publicly available data from *Bombyx mori* and then use the results for predicting TISs in *Manduca sexta* datasets.
 
 MetWAMer has been tested most recently on a 64-bit GNU/Linux system and it compiles cleanly under at least GCC versions 10.1.0 and 7.5.0. The package requires the libxml2 library; it was observed to work properly under version 2.9.4. It is otherwise self-contained, although host systems are encouraged to provide the GNU implementation of awk, gawk, if possible. Please see the manual page for usage details. This software is provided "**AS IS**".
