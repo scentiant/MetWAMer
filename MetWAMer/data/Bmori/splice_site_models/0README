@@ -1,4 +1,4 @@
-# Michael E. Sparks (michael.sparks2@usda.gov), 22 December 2020
+# Michael E. Sparks (michael.sparks2@usda.gov), 14 January 2021
 
 # *** this workflow uses the ParaFly scheduler, available in the
 # Trinity RNA-Seq assembler distribution:
@@ -73,8 +73,16 @@ gunzip consensus/*.xml.gz # b/c BSSM4GSQ doesn't handle gzip'ed files
 # written (the C code for which was integrated into gth), so we
 # need to retrofit BSSM4GSQ to harmonize with the current system.
 # I prefer BSSM4GSQ, which allows for updating GENESEQER
-# (and whose plumbing I'm more familiar with).
-# Others may prefer gthbssmtrain. Both approaches are demonstrated.
+# (and whose plumbing I'm more familiar with, in particular
+# because I wrote it). Others may prefer gthbssmtrain.
+# Both approaches are demonstrated.
+
+# If you go the BSSM4GSQ route, please consider citing the
+# following reference:
+#
+#   Sparks, M.E. and Brendel, V. (2005) Incorporation of splice site
+#   probability models for non-canonical introns improves gene structure
+#   prediction in plants. Bioinformatics. 21:iii20-iii30.
 
 # An obvious question arises here: why build training data with
 # either, when we could just use the NCBI gene annotations
@@ -85,7 +93,7 @@ gunzip consensus/*.xml.gz # b/c BSSM4GSQ doesn't handle gzip'ed files
 # So, we'll see how to bootstrap these ourselves.
 # Practitioners who disagree can prepare splice site model
 # training data by their own prefered means and then skip
-# to the training steps.
+# ahead to the training steps.
 
 # see p.32 of the gth manual
 gth \
