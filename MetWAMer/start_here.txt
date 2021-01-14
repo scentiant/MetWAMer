@@ -1,4 +1,6 @@
 
+# ** History:
+
 # updated 13 January 2021 by Michael E. Sparks (michael.sparks2@usda.gov):
 # Added trained parameter files for Bombyx mori and
 # enhanced documentation for end users, demonstrating how
@@ -14,11 +16,13 @@
 # The source code base has been fully updated to
 # compile under GCC 4.8.1
 
+# ** Build, learn about and demo the system:
+
 # First, build the package.
-./build_it.sh ; sleep 3s
+./build_it.sh
 
 # Then, read the documentation.
-groff -man -Tascii doc/MetWAMer.1 | less ; sleep 3s
+groff -man -Tascii doc/MetWAMer.1 | less
 
 # Last, run the exemplar scripts
 ./MkWAMs.sh
