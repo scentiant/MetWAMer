@@ -9,7 +9,7 @@ use constant CONTENTSWATHLEN => 96;
 
 while(<>) {
   my $desc=$_;
-  $desc=~/^>(.*?\.\d+)([+-]).*?\((\d.*?\d)\)/;
+  $desc=~/^>(\S+\d+)([+-]).*?\((\d.*?\d)\)/;
   my ($gdna,$orient,$coords)=($1,$2,$3);
 
   my @exons=split(/,/,$coords);

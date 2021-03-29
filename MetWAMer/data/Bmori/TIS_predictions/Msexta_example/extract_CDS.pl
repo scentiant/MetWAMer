@@ -4,7 +4,7 @@ use strict;
 # Michael E. Sparks (michael.sparks2@usda.gov), 12 January 2021
 
 while(<>) {
-  $_=~/^>(.*?\.\d+)([+-]).*?\((\d.*?\d)\)/;
+  $_=~/^>(\S+\d+)([+-]).*?\((\d.*?\d)\)/;
   my ($gdna,$orient,$coords)=($1,$2,$3);
   print $_;
 
