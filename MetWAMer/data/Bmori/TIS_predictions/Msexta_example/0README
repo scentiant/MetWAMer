@@ -153,9 +153,9 @@ ln -s uniq_PPS.per_coords.min100.LE20PercMask.fpa Msexta_LE20PercMask.fpa # alia
 #uniq_PPS.per_coords.min100.GT20PercMask.dat:13926
 #uniq_PPS.per_coords.min100.LE20PercMask.fpa:35666
 
-# execute the following from a solid state hard drive, if possible.
-# it may be necessary to adjust the regex to correctly capture the $gdna
-# variable in the extract_CDS.pl script (checking first is recommended)
+# Execute the following from a solid state hard drive, if possible.
+# It may be necessary to adjust the regex to correctly capture the $gdna
+# variable in the extract_CDS.pl script (checking first is recommended).
 grep '^>' Msexta_LE20PercMask.fpa | ./extract_CDS.pl | \
   ../../merge_fasta.pl > Msexta_LE20PercMask.CDS.fromSoftMasked.fna
 
@@ -190,8 +190,8 @@ ln -s outpep.uniq_per_coords.fpa Msexta_LE20PercMask.pep.fromSoftMasked.coordAdj
 diff <(grep '^>' Msexta_LE20PercMask.CDS.fromSoftMasked.coordAdjusted.fna | sort) \
      <(grep '^>' Msexta_LE20PercMask.pep.fromSoftMasked.coordAdjusted.fpa | sort) # runs silent
 
-# it may be necessary to adjust the regex to correctly capture the $gdna
-# variable in the extract_CDS.plusFlanks.pl script (checking first is recommended)
+# It may be necessary to adjust the regex to correctly capture the $gdna
+# variable in the extract_CDS.plusFlanks.pl script (checking first is recommended).
 grep '^>' Msexta_LE20PercMask.pep.fromSoftMasked.coordAdjusted.fpa | \
   ./extract_CDS.plusFlanks.pl \
   2> Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.fna.OUT-OF-BOUNDS | \
@@ -210,8 +210,8 @@ MetWAMer.CDS -s -k 3 -d 2 -l Bombyx/meds.medoids.xml \
 #$ wc -l mult3.errors
 #0 mult3.errors
 
-# You must work through the following commands with your results to
-# produce the *.MetWAMer_results_alt file needed in the next step.
+# *** You must work through the following commands with your own results so
+#     as to produce the *.MetWAMer_results_alt file needed in the next step. ***
 #$ grep -c '^>' Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.fna
 #34998
 #$ wc -l Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
@@ -266,8 +266,8 @@ grep -v '^>' keepers.CDS.fna | grep -v '^ATG' # runs silent
 ( grep '^>' keepers.CDS.fna | ./update_CDS_coordinates_per_MetWAMer.pl ; \
   grep '^>' ignore.CDS.fna ) | \
   sort -u > mature_and_unique-by-coord_CDS.coords.txt
-# it may be necessary to adjust the regex to correctly capture the $ctg
-# variable in the extract_mature_CDS.pl script (checking first is recommended)
+# It may be necessary to adjust the regex to correctly capture the $ctg
+# variable in the extract_mature_CDS.pl script (checking first is recommended).
 cat mature_and_unique-by-coord_CDS.coords.txt | \
   ./extract_mature_CDS.pl | \
   ../../merge_fasta.pl | \
@@ -302,8 +302,8 @@ cat mature_and_unique-by-coord_pep.fpa | \
   ../../merge_fasta.pl | \
   ../../columnize_fasta.pl \
   > mature_and_unique-by-coord_pep.len-bounded.fpa
-# it may be necessary to adjust the regex to correctly capture the $ctg
-# variable in the extract_mature_CDS.pl script (checking first is recommended)
+# It may be necessary to adjust the regex to correctly capture the $ctg
+# variable in the extract_mature_CDS.pl script (checking first is recommended).
 grep '^>' mature_and_unique-by-coord_pep.len-bounded.fpa | \
   ./extract_mature_CDS.pl | \
   ../../merge_fasta.pl | \
