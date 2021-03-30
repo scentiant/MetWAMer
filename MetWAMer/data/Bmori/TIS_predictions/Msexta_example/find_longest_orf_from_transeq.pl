@@ -44,7 +44,7 @@ while(<PEP>) {
   my $offsetNterm = 3 * index($seqPEP, $longest);
 
   #>NW_023592558.1+ (7909  8280,8518  8571,9031  9087)
-  $descCDS=~/^(>.*?\.\d+([+-])\s+\()(\d.*?\d)(\))/;
+  $descCDS=~/^(>\S+\d+([+-])\s+\()(\d.*?\d)(\))/;
   my ($bite1,$orient,$coords,$bite2)=($1,$2,$3,$4); # $bite2 keeps the regex honest
 
   my @exons=split(/,/,$coords);

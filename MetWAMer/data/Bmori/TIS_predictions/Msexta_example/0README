@@ -164,6 +164,8 @@ grep '^>' Msexta_LE20PercMask.fpa | ./extract_CDS.pl | \
 # and adjust coordinates accordingly.
 transeq -sequence Msexta_LE20PercMask.CDS.fromSoftMasked.fna \
   -outseq Msexta_LE20PercMask.pep.fromSoftMasked.fasta -trim
+# It may be necessary to adjust the regex to correctly capture the $bite1
+# variable in find_longest_orf_from_transeq.pl (checking first is recommended).
 ./find_longest_orf_from_transeq.pl \
   <(../../merge_fasta.pl < Msexta_LE20PercMask.pep.fromSoftMasked.fasta | \
     sed 's/  / /g' | sed 's/ /  /g' | sed 's/_1  (/ (/') \
