@@ -2,9 +2,11 @@
 
 # Mktraindata.sh - Script to create BSSM training data
 
-# Michael E Sparks (mespar1@iastate.edu)
-# Last modified: 14 Dec 2020 (made a few idiosyncratic adjustments
-# to accommodate Bombyx mori training data)
+# Michael E Sparks (michael.sparks2@usda.gov)
+# Recent modifications:
+# 3 Sep 2021 (made key on which to sort explicit)
+# 14 Dec 2020 (made a few idiosyncratic adjustments
+#   to accommodate Bombyx mori training data)
 
 # Permission to use, copy, modify, and distribute this software for any
 # purpose with or without fee is hereby granted, provided that the above
@@ -91,13 +93,13 @@ done
 
 # concatenate the model files and eliminate redundant/empty entries
 cat $OUT/*_I[012] | $NONREDUNDANT/fasta2convertable.pl | \
-  sed '/^ \*\*\*/d' | sort | $NONREDUNDANT/squash.pl   | \
+  sed '/^ \*\*\*/d' | sort -k1,1 | $NONREDUNDANT/squash.pl   | \
   $NONREDUNDANT/convert2fasta.pl | \
   ./silkworm_adj.pl > $EIOUT/fileI
 HYPOS="0 1 2 I0 I1 I2"
 for i in $HYPOS; do
   cat $OUT/*_${i} | $NONREDUNDANT/fasta2convertable.pl | \
-    sed '/^ \*\*\*/d' | sort | $NONREDUNDANT/squash.pl | \
+    sed '/^ \*\*\*/d' | sort -k1,1 | $NONREDUNDANT/squash.pl | \
     $NONREDUNDANT/convert2fasta.pl | \
     ./silkworm_adj.pl > $EIOUT/file${i}
   rm -f $OUT/*_${i}

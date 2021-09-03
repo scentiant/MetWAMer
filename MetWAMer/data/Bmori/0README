@@ -6,6 +6,9 @@
 # With care, it should be possible to adapt this workflow
 # for other species.
 
+# Modifications:
+# 1 September 2021 - key on "nonred" alias' sort call made explicit
+
 mkdir NCBI_annots
 cd NCBI_annots
 for f in GCF_000151625.1_ASM15162v1_genomic.fna.gz \
@@ -39,10 +42,10 @@ cat NCBI_annots/GCF_000151625.1_ASM15162v1_cds_from_genomic.fna | \
   < Bmori.noncod-pre.fna > Bmori.noncod.fna 2> /dev/null
 ./fasta2convertable.pl < Bmori.noncod.fna | shuf > Bmori.noncod.permuted.tmp
 #sanity check:
-#$ ./fasta2convertable.pl < Bmori.noncod.fna | sort | md5sum
-#ff6400f8f394a90a07dd99fb715a850b  -
-#$ cat Bmori.noncod.permuted.tmp | sort | md5sum
-#ff6400f8f394a90a07dd99fb715a850b  -
+#$ ./fasta2convertable.pl < Bmori.noncod.fna | sort -k1,1 | md5sum
+#bbaee11763c672eba6ec7ba589287758  -
+#$ cat Bmori.noncod.permuted.tmp | sort -k1,1 | md5sum
+#bbaee11763c672eba6ec7ba589287758  -
 
 split -n r/10 --numeric-suffixes=1 \
   Bmori.noncod.permuted.tmp Bmori.noncod.permuted.tmp.
@@ -175,7 +178,7 @@ cat Bmori.codseq.withFlanks.fna | \
 alias nonred="\
 ${PWD}/merge_fasta.pl | \
 ${PWD}/fasta2convertable.pl | \
-sort | \
+sort -k1,1 | \
 ${PWD}/squash.pl | \
 ${PWD}/convert2fasta.pl | \
 ${PWD}/columnize_fasta.pl"
@@ -187,9 +190,9 @@ cat TIS_for_PWM.fna | nonred > TIS_for_PWM.nonred.fna
 # edit the sed substitutions in the following command given info learned above
 ./partition_clues.pl Bmori.medoids.xml Bmori_clusts.dat | sort -k2,2n | \
   awk '{print $3,"\t",$2}' | sed 's/ //g' | \
-  sed 's/6269/1/' | \
-  sed 's/36/2/' | \
-  sed 's/7028/3/' \
+  sed 's/32/1/' | \
+  sed 's/7049/2/' | \
+  sed 's/8264/3/' \
   > TIS_to_medoid_mapping.txt
 
 # read the code if curious, but the following scripts partition
