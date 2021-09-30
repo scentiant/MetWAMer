@@ -107,7 +107,7 @@ gth \
 -o allprot_vs_allgdna.gff3
 
 # I had to manually adjust the gff3 file and restart a handful of
-# times, due to problematic genes that caused gth to crash.
+# times, due to problematic genes that caused gthbssmtrain to crash.
 gthbssmtrain \
   -seqfile GCF_000151625.1_ASM15162v1_genomic_hmask100Kmin.fna \
   allprot_vs_allgdna.gff3

@@ -7,7 +7,8 @@
 # for other species.
 
 # Modifications:
-# 1 September 2021 - key on "nonred" alias' sort call made explicit
+# 30 September 2021 - key and delimiter on "nonred"
+#                     alias' sort call made explicit
 
 mkdir NCBI_annots
 cd NCBI_annots
@@ -41,10 +42,11 @@ cat NCBI_annots/GCF_000151625.1_ASM15162v1_cds_from_genomic.fna | \
 ../../IMMpractical/training_data/utilities/clean_data.pl \
   < Bmori.noncod-pre.fna > Bmori.noncod.fna 2> /dev/null
 ./fasta2convertable.pl < Bmori.noncod.fna | shuf > Bmori.noncod.permuted.tmp
-#sanity check:
-#$ ./fasta2convertable.pl < Bmori.noncod.fna | sort -k1,1 | md5sum
+# sanity check: your checksums will very likely differ from these,
+# but the point is that the resulting digests should agree.
+#$ ./fasta2convertable.pl < Bmori.noncod.fna | sort -k1,1 -t ' ' | md5sum
 #bbaee11763c672eba6ec7ba589287758  -
-#$ cat Bmori.noncod.permuted.tmp | sort -k1,1 | md5sum
+#$ cat Bmori.noncod.permuted.tmp | sort -k1,1 -t ' ' | md5sum
 #bbaee11763c672eba6ec7ba589287758  -
 
 split -n r/10 --numeric-suffixes=1 \
@@ -178,7 +180,7 @@ cat Bmori.codseq.withFlanks.fna | \
 alias nonred="\
 ${PWD}/merge_fasta.pl | \
 ${PWD}/fasta2convertable.pl | \
-sort -k1,1 | \
+sort -k1,1 -t ' ' | \
 ${PWD}/squash.pl | \
 ${PWD}/convert2fasta.pl | \
 ${PWD}/columnize_fasta.pl"
@@ -186,13 +188,13 @@ cat TIS_for_PWM.fna | nonred > TIS_for_PWM.nonred.fna
 ../../bin/calc_medoids 3 TIS_for_PWM.nonred.fna Bmori > Bmori_clusts.dat # take a lunch break...
 
 # the following gives a sense of what medoid (last col) a tmp id (2nd col) corresponds to
-./partition_clues.pl Bmori.medoids.xml Bmori_clusts.dat | sort -k2,2n | less
+./partition_clues.pl Bmori.medoids.xml Bmori_clusts.dat | sort -k2,2n -t$'\t' | less
 # edit the sed substitutions in the following command given info learned above
-./partition_clues.pl Bmori.medoids.xml Bmori_clusts.dat | sort -k2,2n | \
+./partition_clues.pl Bmori.medoids.xml Bmori_clusts.dat | sort -k2,2n -t$'\t' | \
   awk '{print $3,"\t",$2}' | sed 's/ //g' | \
-  sed 's/32/1/' | \
-  sed 's/7049/2/' | \
-  sed 's/8264/3/' \
+  sed 's/36/1/' | \
+  sed 's/6269/2/' | \
+  sed 's/7028/3/' \
   > TIS_to_medoid_mapping.txt
 
 # read the code if curious, but the following scripts partition

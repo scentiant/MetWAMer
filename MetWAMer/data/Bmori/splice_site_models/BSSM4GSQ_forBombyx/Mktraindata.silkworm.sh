@@ -4,7 +4,7 @@
 
 # Michael E Sparks (michael.sparks2@usda.gov)
 # Recent modifications:
-# 3 Sep 2021 (made key on which to sort explicit)
+# 30 Sep 2021 (made explicit which key & delimeter to base sort call on)
 # 14 Dec 2020 (made a few idiosyncratic adjustments
 #   to accommodate Bombyx mori training data)
 
@@ -93,13 +93,13 @@ done
 
 # concatenate the model files and eliminate redundant/empty entries
 cat $OUT/*_I[012] | $NONREDUNDANT/fasta2convertable.pl | \
-  sed '/^ \*\*\*/d' | sort -k1,1 | $NONREDUNDANT/squash.pl   | \
+  sed '/^ \*\*\*/d' | sort -k1,1 -t ' ' | $NONREDUNDANT/squash.pl | \
   $NONREDUNDANT/convert2fasta.pl | \
   ./silkworm_adj.pl > $EIOUT/fileI
 HYPOS="0 1 2 I0 I1 I2"
 for i in $HYPOS; do
   cat $OUT/*_${i} | $NONREDUNDANT/fasta2convertable.pl | \
-    sed '/^ \*\*\*/d' | sort -k1,1 | $NONREDUNDANT/squash.pl | \
+    sed '/^ \*\*\*/d' | sort -k1,1 -t ' ' | $NONREDUNDANT/squash.pl | \
     $NONREDUNDANT/convert2fasta.pl | \
     ./silkworm_adj.pl > $EIOUT/file${i}
   rm -f $OUT/*_${i}

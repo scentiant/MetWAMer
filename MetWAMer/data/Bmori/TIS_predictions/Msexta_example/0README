@@ -42,7 +42,7 @@ GCF_014839805.1_JHU_Msex_v1.0/GCF_014839805.1_JHU_Msex_v1.0_rna.fna.gz | \
   ../../merge_fasta.pl \
   > Msexta.tcts.fna
 
-pools=32 # used as a global variable here & in the ParaFly call, infra
+pools=64 # used as a global variable here & in the ParaFly call, infra
 ../../../../IMMpractical/training_data/utilities/\
 data_partition.sh $pools 2 Msexta.tcts.fna
 mkdir query_mRNA
@@ -206,28 +206,28 @@ MetWAMer.CDS -s -k 3 -d 2 -l Bombyx/meds.medoids.xml \
   -g Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.fna \
   -n Bombyx/neur.CHI2.sigunit -t 1 -c 3 Bombyx/MCparms.CHI2 2> mult3.errors | \
   perl -e '{while(<>) {$desc=$_; $_=<>; chomp($_); print $_,"\t",$desc;}}' | \
-  sort -k1,1n \
+  sort -k1,1n -t$'\t' \
   > Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
 
 #$ wc -l mult3.errors
 #0 mult3.errors
 
-# *** You must work through the following commands with your own results so
+# *** You MUST work through the following commands with your own results so
 #     as to produce the *.MetWAMer_results_alt file needed in the next step. ***
 #$ grep -c '^>' Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.fna
 #34998
 #$ wc -l Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
 #34998 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
 #$ grep -c '^-1' Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
-#8421
+#8414
 #$ egrep -c "^102$TAB" Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results
-#1531
-#$ expr 8421 + 1531
-#9952
-#$ sed -n '9953,$p' < Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results > Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
+#1529
+#$ expr 8414 + 1529
+#9943
+#$ sed -n '9944,$p' < Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results > Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
 #$ wc -l Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
-#25046 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
-#$ expr 8421 + 1531 + 25046
+#25055 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
+#$ expr 8414 + 1529 + 25055
 #34998
 
 # get some second opinions on whether or not to accept MetWAMer's predictions
@@ -236,10 +236,10 @@ MetWAMer.CDS -s -k 3 -d 2 -l Bombyx/meds.medoids.xml \
   1> Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_keep \
   2> Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_ignore
 #$ wc -l Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt*
-#  25046 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
-#   4250 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_ignore
+#  25055 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt
+#   4259 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_ignore
 #  20796 Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_keep
-#  50092 total
+#  50110 total
 
 cat Msexta_LE20PercMask.CDSwithFlanks.fromSoftMasked.coordAdjusted.MetWAMer_results_alt_keep | \
   cut -f 2- | sort -u | tee keepers.list | wc -l
@@ -313,15 +313,15 @@ grep '^>' mature_and_unique-by-coord_pep.len-bounded.fpa | \
   > mature_and_unique-by-coord_CDS.len-bounded.fna
 
 #$ grep -c '^>' mature_and_unique-by-coord_*.len-bounded.f?a
-#mature_and_unique-by-coord_CDS.len-bounded.fna:33028
-#mature_and_unique-by-coord_pep.len-bounded.fpa:33028
+#mature_and_unique-by-coord_CDS.len-bounded.fna:33021
+#mature_and_unique-by-coord_pep.len-bounded.fpa:33021
 ## assuming you still have the 'nonred' alias set from ../../0README,
 ## get a sense of duplicated protein sequences in the genome
 #$ cat mature_and_unique-by-coord_CDS.len-bounded.fna | nonred | grep -c '^>'
-#32398
+#32392
 ## note the redundancy of the genetic code
 #$ cat mature_and_unique-by-coord_pep.len-bounded.fpa | nonred | grep -c '^>'
-#31894
+#31887
 
 # If the end user would like to use these models as extrinsic
 # evidence for use with Augustus, the following could be used:

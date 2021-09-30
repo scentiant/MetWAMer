@@ -10,7 +10,7 @@ for f in ../consensus/*.xml; do ln -s ../../$f input/gsq/`basename $f .1.con.xml
 for f in input/gsq/*.xml; do jing ../../../../specs/GenomeThreader.rng $f; done
 
 then run ./Mktraindata.silkworm.sh *TWICE*:
-  first w/ $DON="GT" (line 43) & again w/ $DON="GC"
+  first w/ $DON="GT" (line 45) & again w/ $DON="GC"
 this generates results in the ./output/ directory
 each invocation took ~30 min on my system
 
