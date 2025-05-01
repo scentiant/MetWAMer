@@ -1,6 +1,10 @@
 
 # ** History:
 
+# updated 1 May 2025 by Michael E. Sparks (michael.sparks2@usda.gov):
+# Modified the code to enable a clean build under GCC versions
+# 13.3.0 and 9.4.0 on 64-bit GNU/Linux boxes using libxml2 v2.9.14.
+
 # updated 13 January 2021 by Michael E. Sparks (michael.sparks2@usda.gov):
 # Added trained parameter files for Bombyx mori and
 # enhanced documentation for end users, demonstrating how
@@ -27,3 +31,6 @@ groff -man -Tascii doc/MetWAMer.1 | less
 # Last, run the exemplar scripts
 ./MkWAMs.sh
 ./UseMetWAM.sh
+
+# Don't forget the detailed usage demo in data/Bmori/0README
+

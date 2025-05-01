@@ -1,6 +1,6 @@
 /* train_perceptron.c
- * Michael Sparks (mespar1@gmail.com)
- * Last modified : 20 July 2013
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 30 April 2025 (added errbuff reference)
  *
  * This code implements train_perceptron, which trains
  * classification machinery, given a set of instances,
@@ -31,6 +31,8 @@
 #include <string.h>
 #include "classifiers.h"
 #include "errors.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
 
 #define MAXRECORDLEN 2048 /* Max (string) length of feature vector inputs */
 #define VERYLARGE (LDBL_MAX/1.075)

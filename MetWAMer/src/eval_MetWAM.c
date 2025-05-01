@@ -1,8 +1,8 @@
 /* eval_MetWAM.c
- * Michael Sparks (mespar1@gmail.com)
- * Last modified : 20 July 2013
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 30 April 2025 (added errbuff reference)
  *
- * Computes log-likelihood ratios of Met's in test sequences.
+ * Computes log-likelihood ratios of Mets in test sequences.
  *
  * Copyright (c) 2007,2013 Michael E Sparks
  * All rights reserved.
@@ -26,6 +26,8 @@
 #include "errors.h"
 #include "MetWAM_utils.h"
 #include "sequence_parse.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
 
 #define ARGCT 4
 #define USAGE "\a\nUsage: %s x.true.MetWAM \

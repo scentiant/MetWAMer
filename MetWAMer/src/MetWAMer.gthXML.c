@@ -1,6 +1,8 @@
 /* MetWAMer.gthXML.c
- * Michael Sparks (mespar1@gmail.com)
- * Last modified : 20 July 2013
+ *
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 1 May 2025
+ *   (added errbuff and cluster_parm_selection references)
  *
  * This utility parses a gthXML or PASIF xml document,
  * and tries to identify "reasonable" translation initiation sites
@@ -41,6 +43,11 @@
 #include "libxml2_addendum.h"
 #include "MetWAM_utils.h"
 #include "sequence_parse.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
+
+extern int cluster_parm_selection; /* from the "MetWAM_utils"  *
+                                    * compilation module       */
 
 #define USAGE {\
   int w;\

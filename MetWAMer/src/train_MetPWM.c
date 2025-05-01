@@ -1,6 +1,6 @@
 /* train_MetPWM.c
- * Michael Sparks (mespar1@gmail.com)
- * Last modified : 20 July 2013
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 30 April 2025 (added errbuff reference)
  *
  * Main implementation file for the train_MetPWM utility.
  *
@@ -28,6 +28,8 @@
 #include "MetWAM_utils.h"
 #include "probdef.h"
 #include "sequence_parse.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
 
 #define ARGCT 3
 #define USAGE "\a\nUsage: %s sites.fas outfile\n\

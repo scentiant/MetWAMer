@@ -1,6 +1,8 @@
 /* index_utils.h
- * Michael E Sparks (mespar1@gmail.com)
- * Last modified: 17 August 2007
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 1 May 2025
+ *   (gcc 13.3.0 disliked my placing the stdgencode global array into this
+ *    header, so it's now moved to this compilation module's C source file.)
  *
  * Functions used by indexFasSeq and related utilities.
  *
@@ -26,10 +28,16 @@
 #include <ctype.h>
 #include "sequence_parse.h"
 
-/* Standard genetic code.  This lookup table should not be initialized as *
- * a table, because we don't necessarily know which of [0-4] Ade, Cyt,    *
- * Gua, and Thy map to: Call the INIT_STD_GEN_CODE macro, instead.        */
-char stdgencode[NTALFSIZE][NTALFSIZE][NTALFSIZE];
+/* Now declared in index_utils.c; available in other compilation modules *
+ * through use of the extern keyword. MES, 1 May 2025                    *
+ * This global variable stores the standard genetic code. It should not  *
+ * be initialized as a table, because we don't necessarily know which of *
+ * [0-4] that Ade, Cyt, Gua and Thy map to: Call the INIT_STD_GEN_CODE   *
+ * macro to initialize it, instead.                                      *
+char stdgencode[NTALFSIZE][NTALFSIZE][NTALFSIZE];                        */
+
+/* This macro initializes the stdgencode array *
+ * (which implements a codon lookup table).    */
 #define INIT_STD_GEN_CODE { \
   stdgencode[Thy][Thy][Thy]='F'; \
   stdgencode[Thy][Thy][Cyt]='F'; \

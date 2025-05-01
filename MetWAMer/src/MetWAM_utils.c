@@ -1,6 +1,10 @@
 /* MetWAM_utils.c
- * Michael Sparks (michael.sparks2@usda.gov)
- * Last modified : 21 December 2020
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 1 May 2025
+ *   (added errbuff reference and moved the cluster_parm_selection variable
+ *    declaration from the MetWAM_utils.h header file to here. MES)
+ *
+ * Previously modified : 21 December 2020
  *   (more extensive error reporting for CDSs whose
  *    lengths aren't multiples of 3. MES)
  *
@@ -39,6 +43,11 @@
 #include "probdef.h"
 #include "MetWAM_utils.h"
 #include "sequence_parse.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
+
+int cluster_parm_selection; /* global variable indexing user's     *
+                               preference for Hamming, PWM or WAM. */
 
 /* Function prototypes *******************************************************/
 

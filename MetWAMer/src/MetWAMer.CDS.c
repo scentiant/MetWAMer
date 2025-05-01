@@ -1,7 +1,10 @@
 /* MetWAMer.CDS.c
  *
- * Michael Sparks (michael.sparks2@usda.gov)
- * Last modified : 21 December 2020
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 1 May 2025
+ *   (added errbuff and cluster_parm_selection references)
+ *
+ * Previously modified : 21 December 2020
  *   (more extensive error reporting for CDSs whose
  *    lengths aren't multiples of 3. MES)
  *
@@ -42,6 +45,11 @@
 #include "libxml2_addendum.h"
 #include "MetWAM_utils.h"
 #include "sequence_parse.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
+
+extern int cluster_parm_selection; /* from the "MetWAM_utils"  *
+                                    * compilation module       */
 
 #define USAGE {\
   int w;\

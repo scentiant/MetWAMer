@@ -5,7 +5,7 @@
 # On Ubuntu, issue ``sudo apt install libxml2-dev".
 
 # build_it.sh - Script to fully automate the build process
-#               for the MetWAMer package.  A much more elegant
+#               for the MetWAMer package. A much more elegant
 #               solution would be to use GNU Autotools, but
 #               many configuration options were buried in the
 #               original Makefiles to assist with testing
@@ -14,7 +14,7 @@
 #               That being said, the current approach
 #               should work perfectly fine on most systems.
 
-# Michael E Sparks (mespar1@gmail.com)
+# Michael E. Sparks (michael.sparks2@usda.gov)
 # Last modified: 20 December 2020
 
 # Copyright (c) 2010,2013 Michael E Sparks

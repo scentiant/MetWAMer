@@ -3,7 +3,7 @@
 # UseMetWAM.sh - Script to demonstrate use of the MetWAMer.gthXML
 #                program on gthXML and PASIF xml documents.
 
-# Michael E Sparks (mespar1@gmail.com)
+# Michael E. Sparks (michael.sparks2@usda.gov)
 # Last modified: 20 July 2013
 
 # Copyright (c) 2007,2013 Michael E Sparks

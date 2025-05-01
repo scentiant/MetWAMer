@@ -1,6 +1,12 @@
 /* errors.h
  * Michael E Sparks (michael.sparks2@usda.gov)
- * Last modified: 21 December 2020
+ *
+ * Last modified: 1 May 2025
+ *   (gcc 13.3.0 disliked my placing the errbuff global variable
+ *   in this header file; it also balked at my not declaring it with
+ *   the extern keyword in other compilation units that used it. MES)
+ *
+ * Previously modified: 21 December 2020
  *   (increased MAXERRLEN value in response to format-truncation
  *    warnings issued by gcc version 10.1.0. MES)
  *
@@ -28,7 +34,9 @@
 
 #define MAXERRLEN 1048576 /* Max length of error message + 1 */
 
-char errbuff[MAXERRLEN]; /* (Global) buffer for storing error messages */
+/* Now declared in errors.c; available in other compilation modules    *
+ * through use of the extern keyword. MES, 1 May 2025                  *
+char errbuff[MAXERRLEN]; // (Global) buffer for storing error messages */
 
 /* Print a descriptive message for a recoverable error. *
  * This macro can be called if the user simply wants    *

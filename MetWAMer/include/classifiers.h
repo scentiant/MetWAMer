@@ -1,5 +1,5 @@
 /* classifiers.h
- * Michael Sparks (mespar1@gmail.com)
+ * Michael E. Sparks (michael.sparks2@usda.gov)
  * Last modified : 14 August 2007
  *
  * Contains classifier-related functions for use in MetWAMer.

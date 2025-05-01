@@ -1,6 +1,8 @@
 /* MetWAM_utils.h
- * Michael Sparks (mespar1@gmail.com)
- * Last modified : 24 February 2007
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 1 May 2025
+ *   (moved the cluster_parm_selection global method indexing
+ *    variable from here to the MetWAM_utils.c source file. MES)
  *
  * Functions germane to calculations derived from a trained MetWAM
  *
@@ -28,6 +30,11 @@
 #include <limits.h>
 #include "classifiers.h"
 #include "sequence_parse.h"
+
+/* Now declared in MetWAM_utils.c; available in other compilation modules *
+ * through use of the extern keyword. MES, 1 May 2025                     *
+int cluster_parm_selection; // global variable indexing user's            *
+                               preference for Hamming, PWM or WAM.        */
 
 #define UPDATEDXMLOUTSTREAM stdout /* File stream to direct MetWAMer- *
                                     * updated gthXML content to.      */
@@ -103,7 +110,6 @@ enum { /* Allow no value to be .LT. 0 here!! */
   PWMSTATX,
   WAMSTATX,
 };
-int cluster_parm_selection; /* global variable */
 
 /* Minimum length of an open reading frame *
  * for which we predict a start-Methionine */

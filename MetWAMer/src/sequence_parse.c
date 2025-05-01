@@ -1,6 +1,6 @@
 /* sequence_parse.c
- * Michael E Sparks (mespar1@gmail.com)
- * Last modified: 20 July 2013
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 30 April 2025 (added errbuff reference)
  *
  * Code for parsing FASTA formatted sequences.
  *
@@ -27,6 +27,8 @@
 #include <stdlib.h>
 #include "errors.h"
 #include "sequence_parse.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
 
 /* Function definitions ******************************************************/
 

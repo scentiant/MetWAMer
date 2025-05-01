@@ -1,6 +1,7 @@
 /* contact.h
- * Michael E Sparks (mespar1@gmail.com)
- * Last modified: 20 August 2007
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified: 1 May 2025
+ *   (added errbuff reference and updated fields)
  *
  * How to find me.
  *
@@ -25,9 +26,11 @@
 
 #include "errors.h"
 
-char maintainer[]="Michael E Sparks",
-     email[]="mespar1@gmail.com",
-     url[]="http://brendelgroup.org/mespar1";
+extern char errbuff[]; /* from the "errors" compilation unit */
+
+char maintainer[]="Michael E. Sparks, Ph.D.",
+     email[]="michael.sparks2@usda.gov",
+     url[]="https://github.com/scentiant";
 
 #define BUGGERS_OFF { \
   (void)snprintf(errbuff,MAXERRLEN,"\n  Please direct bug reports to:\n\n\

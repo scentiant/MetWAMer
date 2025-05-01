@@ -1,6 +1,6 @@
 /* probdef.h
  *
- * Michael Sparks <mespar1@gmail.com>
+ * Michael E. Sparks (michael.sparks2@usda.gov)
  * Last modified : 17 August 2007
  *
  * Copyright (c) 2007 Michael E Sparks
@@ -43,8 +43,8 @@
 #define MAXPROB     1.0000 /* Max prob in PMF dists of WAM */
 
 /* The following definitions are already specified *
- * as needed in the immpractical header.           */
-//#define EQUIPROB    0.2500
-//#define NULLPROB    0.0000
+ * as needed in the IMMpractical library's header. *
+ * #define EQUIPROB    0.2500                      *
+ * #define NULLPROB    0.0000                      */
 
 #endif 

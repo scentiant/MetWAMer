@@ -1,6 +1,10 @@
 /* index_utils.c
- * Michael E Sparks (mespar1@gmail.com)
- * Last modified: 20 July 2013
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 1 May 2025
+ *   (gcc 13.3.0 disliked my placing the stdgencode array into the
+ *   index_utils.h header file, and so now it is placed in this
+ *   C source file. Furthermore, other source files using this
+ *   global variable should declare it with the extern keyword.)
  *
  * Functions used by indexFasSeq and related utilities.
  *
@@ -26,6 +30,14 @@
 #include "errors.h"
 #include "index_utils.h"
 #include "sequence_parse.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
+
+/* This global variable stores the standard genetic code. It should not  *
+ * be initialized as a table, because we don't necessarily know which of *
+ * [0-4] that Ade, Cyt, Gua and Thy map to: Call the INIT_STD_GEN_CODE   *
+ * macro to initialize it, instead.                                      */
+char stdgencode[NTALFSIZE][NTALFSIZE][NTALFSIZE];
 
 /* Function to import an indexFasSeq'ed sequence from the filesystem */
 char *slurpindex(

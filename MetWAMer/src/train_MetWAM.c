@@ -1,6 +1,6 @@
 /* train_MetWAM.c
- * Michael Sparks (mespar1@gmail.com)
- * Last modified : 20 July 2013
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 30 April 2025 (added errbuff reference)
  *
  * Main implementation file for the train_MetWAM utility.
  *
@@ -29,6 +29,8 @@
 #include "MetWAM_utils.h"
 #include "probdef.h"
 #include "sequence_parse.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
 
 #define USAGE "\a\nUsage: %s \\\n\
           [-o first_codon_position] \\\n\

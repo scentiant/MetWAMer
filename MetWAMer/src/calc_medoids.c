@@ -1,6 +1,6 @@
 /* calc_medoids.c
- * Michael Sparks (mespar1@gmail.com)
- * Last modified : 20 July 2013
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 30 April 2025 (added errbuff reference)
  *
  * This utility computes the user-specified number of medoids
  * in a dataset of same-length nucleotide sequences by optimizing
@@ -31,6 +31,8 @@
 #include "errors.h"
 #include "MetWAM_utils.h"
 #include "sequence_parse.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
 
 #define EMMAXRUN     100 /* Max number of passes of the EM algorithm *
                           * during k-medoids clustering.             */

@@ -1,11 +1,17 @@
-/* train_MC.c
+/* errors.c
+ *
  * Michael E. Sparks (michael.sparks2@usda.gov)
  *
- * This utility allows the user to interface with the IMMpractical
- * library, allowing for development of Markov chain transition
- * probability matrices.
+ * Introduced: 1 May 2025
+ *   (gcc 13.3.0 gave linker errors by my placing the errbuff global
+ *   variable directly in the errors.h header file, so it's now
+ *   placed in its own C source file for building into dedicated,
+ *   linkable object code. MES)
  *
- * Copyright (c) 2007 Michael E Sparks
+ * For advising about errors and (potentially) correcting them.
+ *
+ * Copyright (c) 2007,2013 Michael E Sparks
+ * All rights reserved.
  *
  * Permission to use, copy, modify, and distribute this software for any
  * purpose with or without fee is hereby granted, provided that the above
@@ -20,19 +26,6 @@
  * OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-/* Included Libraries */
-#include <immpractical.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "errors.h"
 
-/* Main application */
-int main(int argc,char *argv[])
-{
-  int test;
-
-  /* maintrain is defined in immpractical.c */
-  if((test=maintrain(argc,argv))==TRUE)
-    return(EXIT_SUCCESS);
-  else
-    return(EXIT_FAILURE);
-}
+char errbuff[MAXERRLEN]; /* (Global) buffer for storing error messages */

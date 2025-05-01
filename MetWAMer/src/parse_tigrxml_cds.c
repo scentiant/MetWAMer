@@ -1,6 +1,6 @@
 /* parse_tigrxml_cds.c
- * Michael Sparks (mespar1@gmail.com)
- * Last modified : 20 July 2013
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 30 April 2025 (added errbuff reference)
  *
  * This utility parses a TIGR/TAIR xml document,
  * and generates training sequences that can be used to
@@ -40,6 +40,8 @@
 #include "index_utils.h"
 #include "libxml2_addendum.h"
 #include "MetWAM_utils.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
 
 #define TRAINSEQOUTSTREAM stdout /* Where to write results */
 #define MINAALEN             100 /* Min len of peptides to *

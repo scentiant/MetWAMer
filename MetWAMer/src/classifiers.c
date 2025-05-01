@@ -1,6 +1,6 @@
 /* classifiers.c
- * Michael Sparks (mespar1@gmail.com)
- * Last modified : 20 July 2013
+ * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 30 April 2025 (added errbuff reference)
  *
  * Contains classifier-related functions for use in MetWAMer.
  *
@@ -25,6 +25,8 @@
 #include <stdlib.h>
 #include "classifiers.h"
 #include "errors.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
 
 /* Neuron-related classifier methods *****************************************/
 

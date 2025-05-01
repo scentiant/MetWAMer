@@ -1,5 +1,5 @@
-/* Michael E Sparks (mespar1@gmail.com)
- * 20 July 2013
+/* Michael E. Sparks (michael.sparks2@usda.gov)
+ * Last modified : 1 May 2025 (added errbuff and stdgencode references)
  *
  * indexFasSeq.c
  *
@@ -34,6 +34,11 @@
 #include "errors.h"
 #include "index_utils.h"
 #include "sequence_parse.h"
+
+extern char errbuff[]; /* from the "errors" compilation module */
+
+extern char stdgencode[][NTALFSIZE][NTALFSIZE]; /* from the "index_utils" *
+                                                   compilation module     */
 
 #define USAGE "\a\n\
     `%s file2index.fas` -> build index named \"file2index.fas.ind\" \n\
