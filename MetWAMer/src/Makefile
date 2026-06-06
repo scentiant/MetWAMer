@@ -1,4 +1,4 @@
-# Michael E. Sparks (michael.sparks2@usda.gov)
+# Michael E. Sparks (mespar1@gmail.com)
 # Last modified : 1 May 2025
 #   (updated to address linking errors observed under gcc 13.3.0)
 

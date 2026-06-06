@@ -2,7 +2,7 @@
 
 # squash.pl
 
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified: 2 Feb 2003
 
 # Copyright (c) 2003 Michael E Sparks

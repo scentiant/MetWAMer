@@ -2,7 +2,7 @@
 
 # Mktraindata.sh - Script to create BSSM training data
 
-# Michael E Sparks (michael.sparks2@usda.gov)
+# Michael E Sparks (mespar1@gmail.com)
 # Recent modifications:
 # 30 Sep 2021 (made explicit which key & delimeter to base sort call on)
 # 14 Dec 2020 (made a few idiosyncratic adjustments

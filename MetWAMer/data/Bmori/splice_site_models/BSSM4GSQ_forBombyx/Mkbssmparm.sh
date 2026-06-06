@@ -3,7 +3,7 @@
 # Mkbssmparm.sh - Manages weight array matrix development
 #                 given appropriate training data.
 
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified: 8 August 2004
 
 # Permission to use, copy, modify, and distribute this software for any
