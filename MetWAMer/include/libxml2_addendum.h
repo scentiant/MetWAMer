@@ -1,5 +1,5 @@
 /* libxml2_addendum.h
- * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Michael E. Sparks (mespar1@gmail.com)
  * Last modified : 20 July 2013
  *
  * Various macro definitions that might have an equivalent in

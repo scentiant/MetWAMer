@@ -2,7 +2,7 @@
 
 # parse_exons-and-introns.pl - Does what it says. Says what it does.
 
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified: 22 May 2007
 
 # Copyright (c) 2003,2007 Michael E Sparks

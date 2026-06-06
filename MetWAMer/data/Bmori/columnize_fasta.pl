@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 
-# Michael E. Sparks (michael.sparks2@usda.gov), 22 December 2020
+# Michael E. Sparks (mespar1@gmail.com), 22 December 2020
 
 # for pretty printing fasta sequences
 

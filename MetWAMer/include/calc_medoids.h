@@ -1,5 +1,5 @@
 /* calc_medoids.h
- * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Michael E. Sparks (mespar1@gmail.com)
  * Last modified : 17 August 2007
  *
  * Functions exported from the calc_medoids implementation file.

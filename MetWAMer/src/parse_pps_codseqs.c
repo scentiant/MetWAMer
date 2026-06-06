@@ -1,5 +1,5 @@
 /* parse_pps_codseqs.c
- * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Michael E. Sparks (mespar1@gmail.com)
  * Last modified : 30 April 2025 (added errbuff reference)
  *
  * This utility parses a gthXML document,

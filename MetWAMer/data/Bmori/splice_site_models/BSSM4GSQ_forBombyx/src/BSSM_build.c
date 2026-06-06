@@ -1,5 +1,5 @@
 /* BSSM_build.c
- * Michael Sparks (mespar1@iastate.edu)
+ * Michael Sparks (mespar1@gmail.com)
  * Last modified : 3 April 2007
  *
  * Main Implementation file for "BSSM_build.x", a program to 

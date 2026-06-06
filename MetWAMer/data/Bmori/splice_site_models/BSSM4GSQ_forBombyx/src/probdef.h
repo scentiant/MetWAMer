@@ -1,6 +1,6 @@
 /* probdef.h
  *
- * Michael Sparks <mespar1@iastate.edu>
+ * Michael Sparks <mespar1@gmail.com>
  * Last modified : 3 April 2007
  *
  * Copyright (c) 2003,2004,2007 Michael E Sparks

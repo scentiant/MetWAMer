@@ -2,7 +2,7 @@
 
 # find_true_donacc.pl - Gathers flanking dinucleotide data.
 
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified: 6-15-03
 
 # Copyright (c) 2003 Michael E Sparks

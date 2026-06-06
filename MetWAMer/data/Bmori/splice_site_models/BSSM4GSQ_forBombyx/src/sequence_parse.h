@@ -1,5 +1,5 @@
 /* sequence_parse.h
- * Michael Sparks (mespar1@iastate.edu)
+ * Michael Sparks (mespar1@gmail.com)
  * Last modified : 12 July 2004
  *
  * Code for parsing FASTA formatted sequences.

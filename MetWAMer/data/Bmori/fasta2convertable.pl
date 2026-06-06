@@ -2,7 +2,7 @@
 
 # fasta2convertable.pl
 
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified: 2 Feb 2015
 
 # Copyright (c) 2003 Michael E Sparks

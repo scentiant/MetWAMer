@@ -2,7 +2,7 @@
 use strict;
 
 # file_sampler.NO_replacement.pl
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified: 31 October 2006
 
 # This is a script to randomly sample some specified number of FASTA

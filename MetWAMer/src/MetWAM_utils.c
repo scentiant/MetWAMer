@@ -1,5 +1,5 @@
 /* MetWAM_utils.c
- * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Michael E. Sparks (mespar1@gmail.com)
  * Last modified : 1 May 2025
  *   (added errbuff reference and moved the cluster_parm_selection variable
  *    declaration from the MetWAM_utils.h header file to here. MES)

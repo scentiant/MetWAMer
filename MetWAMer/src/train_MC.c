@@ -1,5 +1,5 @@
 /* train_MC.c
- * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Michael E. Sparks (mespar1@gmail.com)
  *
  * This utility allows the user to interface with the IMMpractical
  * library, allowing for development of Markov chain transition

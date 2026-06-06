@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Michael E. Sparks (michael.sparks2@usda.gov), 20 December 2020
+# Michael E. Sparks (mespar1@gmail.com), 20 December 2020
 
 while(<>) {
   if(/^>/) {

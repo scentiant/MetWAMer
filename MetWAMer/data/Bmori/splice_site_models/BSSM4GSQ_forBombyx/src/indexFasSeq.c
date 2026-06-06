@@ -1,4 +1,4 @@
-/* Michael E Sparks (mespar1@iastate.edu)
+/* Michael E Sparks (mespar1@gmail.com)
  * Last modified: 17 July 2007
  *
  * indexFasSeq.c

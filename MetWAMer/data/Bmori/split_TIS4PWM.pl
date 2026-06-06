@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 
-# Michael E. Sparks (michael.sparks2@usda.gov), 20 December 2020
+# Michael E. Sparks (mespar1@gmail.com), 20 December 2020
 
 my %tismap=();
 open(MAP,"<TIS_to_medoid_mapping.txt") or die "$!\n";

@@ -1,5 +1,5 @@
 /* eval_MetWAM.c
- * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Michael E. Sparks (mespar1@gmail.com)
  * Last modified : 30 April 2025 (added errbuff reference)
  *
  * Computes log-likelihood ratios of Mets in test sequences.

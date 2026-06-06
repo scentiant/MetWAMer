@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified: 6 April 2007
 
 # get_support_pps.pl - Gets supporting PPS information

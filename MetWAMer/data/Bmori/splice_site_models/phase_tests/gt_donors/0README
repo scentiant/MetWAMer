@@ -1,4 +1,4 @@
-# Michael E. Sparks (michael.sparks2@usda.gov), 20 December 2020
+# Michael E. Sparks (mespar1@gmail.com), 20 December 2020
 
 grep '^>' ../../training_data/GT_donor/T0 | sort > gth_T0
 grep '^>' ../../training_data/GT_donor/T1 | sort > gth_T1

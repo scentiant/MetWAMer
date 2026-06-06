@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 
-# Michael E. Sparks (michael.sparks2@usda.gov), 20 December 2020
+# Michael E. Sparks (mespar1@gmail.com), 20 December 2020
 
 my %md5=();
 open(MAP,"<bmori.md5map.dat") or die "$!\n";

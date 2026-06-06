@@ -1,6 +1,6 @@
 # Project makefile
 
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified : 8 August 2004
 
 # Copyright (c) 2004 Michael E Sparks

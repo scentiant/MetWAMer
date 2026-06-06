@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 
-# Michael E. Sparks (michael.sparks2@usda.gov), 13 January 2021
+# Michael E. Sparks (mespar1@gmail.com), 13 January 2021
 
 # filter_fasta_by_max_length.pl - utility that reads in a Fasta-formatted
 # file of nucleotide sequences, and prints those sequences having length

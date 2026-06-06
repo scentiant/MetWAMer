@@ -1,5 +1,5 @@
 /* index_utils.c
- * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Michael E. Sparks (mespar1@gmail.com)
  * Last modified : 1 May 2025
  *   (gcc 13.3.0 disliked my placing the stdgencode array into the
  *   index_utils.h header file, and so now it is placed in this

@@ -1,6 +1,6 @@
 /* errors.c
  *
- * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Michael E. Sparks (mespar1@gmail.com)
  *
  * Introduced: 1 May 2025
  *   (gcc 13.3.0 gave linker errors by my placing the errbuff global

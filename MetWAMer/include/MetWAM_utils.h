@@ -1,5 +1,5 @@
 /* MetWAM_utils.h
- * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Michael E. Sparks (mespar1@gmail.com)
  * Last modified : 1 May 2025
  *   (moved the cluster_parm_selection global method indexing
  *    variable from here to the MetWAM_utils.c source file. MES)

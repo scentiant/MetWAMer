@@ -1,7 +1,7 @@
 #!/usr/bin/perl -w
 use strict;
 
-# Michael E. Sparks (michael.sparks2@usda.gov), 13 January 2021
+# Michael E. Sparks (mespar1@gmail.com), 13 January 2021
 
 my $FILE = shift or die; # sequences should be merged onto one line in advance
 

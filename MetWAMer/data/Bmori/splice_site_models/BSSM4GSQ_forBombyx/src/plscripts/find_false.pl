@@ -3,7 +3,7 @@
 # find_false.pl - This script parses all false GT or AG sites
 #   in either exons or introns
 
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified: 4-11-04
 
 # Copyright (c) 2004 Michael E Sparks

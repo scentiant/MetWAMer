@@ -1,4 +1,4 @@
-# Michael E. Sparks (michael.sparks2@usda.gov), 22 December 2020
+# Michael E. Sparks (mespar1@gmail.com), 22 December 2020
 
 cd src/ ; make ; cd -
 for f in ../split_gdna/*.fas; do ln -s ../../$f input/fas/`basename $f | sed 's/\.1//'`; done

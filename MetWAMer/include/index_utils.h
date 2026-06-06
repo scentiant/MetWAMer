@@ -1,5 +1,5 @@
 /* index_utils.h
- * Michael E. Sparks (michael.sparks2@usda.gov)
+ * Michael E. Sparks (mespar1@gmail.com)
  * Last modified : 1 May 2025
  *   (gcc 13.3.0 disliked my placing the stdgencode global array into this
  *    header, so it's now moved to this compilation module's C source file.)

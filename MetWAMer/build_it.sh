@@ -14,7 +14,7 @@
 #               That being said, the current approach
 #               should work perfectly fine on most systems.
 
-# Michael E. Sparks (michael.sparks2@usda.gov)
+# Michael E. Sparks (mespar1@gmail.com)
 # Last modified: 20 December 2020
 
 # Copyright (c) 2010,2013 Michael E Sparks

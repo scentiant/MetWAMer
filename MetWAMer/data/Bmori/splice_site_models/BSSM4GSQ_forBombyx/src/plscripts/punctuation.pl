@@ -4,7 +4,7 @@
 #   splicing splice site parameters into GeneSeqer's
 #   daPbm7* header files.
 
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified: 1 April 2005
 
 # Copyright (c) 2005 Michael E Sparks

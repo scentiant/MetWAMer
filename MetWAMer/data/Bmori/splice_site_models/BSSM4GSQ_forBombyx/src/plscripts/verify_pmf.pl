@@ -7,7 +7,7 @@
 #   individually and uniquely sort the results.  Your output should
 #   only be "Problematic case! : 0.0000 0.0000 0.0000 0.0000"
 
-# Michael E Sparks (mespar1@iastate.edu)
+# Michael E Sparks (mespar1@gmail.com)
 # Last modified: 5 April 2007
 
 # Copyright (c) 2005,2007 Michael E Sparks

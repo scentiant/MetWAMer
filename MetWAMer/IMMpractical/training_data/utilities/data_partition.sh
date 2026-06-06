@@ -1,5 +1,5 @@
 #!/bin/bash
-# Michael E Sparks (michael.sparks2@usda.gov)
+# Michael E Sparks (mespar1@gmail.com)
 # 2 June 2006, updated 4 January 2021 by MES
 
 # Script to randomly sample into $BUCKETS equally-sized

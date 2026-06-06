@@ -1,6 +1,6 @@
 /* bssm_utils.c
  *
- * Michael Sparks (mespar1@iastate.edu)
+ * Michael Sparks (mespar1@gmail.com)
  * Last modified : 6 April 2007
  *
  * This is a collection of functions associated with

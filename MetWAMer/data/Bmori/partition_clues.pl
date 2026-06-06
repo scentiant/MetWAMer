@@ -2,7 +2,7 @@
 use strict;
 use List::Util qw( reduce );
 
-# Michael E. Sparks (michael.sparks2@usda.gov), 20 December 2020
+# Michael E. Sparks (mespar1@gmail.com), 20 December 2020
 
 my $MEDFILE=shift @ARGV;
 my $CLUSTFILE=shift @ARGV or die "$0 medoids.xml cluster_report.dat\n";
